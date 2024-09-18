@@ -1,0 +1,38 @@
+
+<!--
+Práctica 3 
+Equipo de:
+Mendiola Montes Victor Manuel
+Carranza Bolaǹos Jatniel
+-->
+
+<div class="card mt-5 pb-1 bg-info bs5-">
+    <h1 class="card-header text-center mb-4 text-white">Categorías</h1>
+    <table class="card-body table">
+        <thead>
+            <tr>
+                <th >ID</th>
+                <th >Categoría</th>
+                <th >Tag</th>
+                <th >Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+           @for (category of categories; track category){
+            <tr>
+                <td>{{category.category_id}} </td>
+                <td>{{category.category}} </td>
+                <td>{{category.tag}} </td>
+                <td>@if (category.status) {
+                        Activo
+                    } @else {
+                        Inactivo
+                    }
+                </td>
+            </tr>
+           }
+        </tbody>
+    </table>
+</div>
+
+

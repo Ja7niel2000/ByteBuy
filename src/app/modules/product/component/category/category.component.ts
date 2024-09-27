@@ -32,20 +32,18 @@ export class CategoryComponent {
 
   }
 
-  onSubmit():void{
+  onSubmit(){
     this.submitted =true;
     if(this.form.invalid)return;
     this.submitted=false;
 
     let id = this.categories.length + 1;
-    let category = new Category(id, this.form.controls["category"].value!,this.form.controls["tag"].value,1);
+    let category = new Category(id, this.form.controls["category"].value!,this.form.controls["code"].value,1);
     this.categories.push(category)
 
     this.hideModalForm();
 
     this.swal.successMessage("La categoria ha sido registrada");
-
-
 
   }
 
@@ -57,14 +55,14 @@ export class CategoryComponent {
     this.getCategories();
   }
 
-  showModalForm(){
+  showModalForm():void{
     this.submitted = false;
     this.form.reset();
     $("#modalForm").modal("show");
   }
 
   hideModalForm():void{
-    $("#modalForm").modal("hidde");
+    $("#modalForm").modal("hide");
 
   }
 

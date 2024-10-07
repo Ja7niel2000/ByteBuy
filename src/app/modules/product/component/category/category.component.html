@@ -43,7 +43,7 @@ Carranza Bolaǹos Jatniel
       
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
+          <h5 class="modal-title">Ingresa nueva categoria</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -58,10 +58,10 @@ Carranza Bolaǹos Jatniel
                 }
               </div>
               <div class="mb-3">
-                <label for="code" class="form-label">Categoría<span class="input-required">*</span></label>
-                <input type="text" class="form-control" formControlName="code" id="code" placeholder="Codigo" [ngClass]="{'is-invalid':form.controls['code'].errors && submitted}">
-                @if (form.controls['code'].errors && submitted){
-                  <small class="invalid-feedback">Favor de ingresar un código valido</small>
+                <label for="tag" class="form-label">Tag<span class="input-required">*</span></label>
+                <input type="text" class="form-control" formControlName="tag" id="tag" placeholder="Etiqueta" [ngClass]="{'is-invalid':form.controls['tag'].errors && submitted}">
+                @if (form.controls['tag'].errors && submitted){
+                  <small class="invalid-feedback">Favor de ingresar una etiqueta valida</small>
                 }
               </div>
             

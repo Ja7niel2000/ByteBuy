@@ -26,7 +26,7 @@ export class CategoryComponent {
   constructor(private categoryService:CategoyService, private formBuilder:FormBuilder ){
     this.form = this.formBuilder.group({
       category:["",[Validators.required]],
-      code:["",[Validators.required]]
+      tag:["",[Validators.required]]
   
     });
 
@@ -38,7 +38,7 @@ export class CategoryComponent {
     this.submitted=false;
 
     let id = this.categories.length + 1;
-    let category = new Category(id, this.form.controls["category"].value!,this.form.controls["code"].value,1);
+    let category = new Category(id, this.form.controls["category"].value!,this.form.controls["tag"].value,1);
     this.categories.push(category)
 
     this.hideModalForm();

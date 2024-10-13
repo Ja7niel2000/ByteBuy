@@ -10,7 +10,7 @@ import { authenticationGuard } from './modules/auth/authentication.guard';
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: '/region',
+        redirectTo: '/categoria',
         pathMatch: 'full'
     },
     {

@@ -10,22 +10,34 @@
                 <th >Categoría</th>
                 <th >Tag</th>
                 <th >Estado</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
-           @for (category of categories; track category){
-            <tr>
-                <td>{{category.category_id}} </td>
+          
+            <tr *ngFor="let category of categories; track category">
+                <td  scope="row">{{category.category_id}} </td>
                 <td>{{category.category}} </td>
                 <td>{{category.tag}} </td>
-                <td>@if (category.status) {
-                        Activo
-                    } @else {
-                        Inactivo
-                    }
+                <td>
+                  <a *ngIf="category.status == 0" (click)="enableCategory(category.category_id)">
+                    <div class="td-status td-status-disable">
+                      {{"inactivo"}}
+                    </div>
+                  </a>
+                  <a *ngIf="category.status == 1" (click)="disableCategory(category.category_id)">
+                    <div class="td-status td-status-enable">
+                      {{"activo"}}
+                    </div>
+                  </a>
+
+                </td>
+                <td>
+                  <a (click)="updateCategory(category)" >
+                    <fa-icon [icon]="faPencil"></fa-icon>
+                  </a>
                 </td>
             </tr>
-           }
         </tbody>
     </table>
 </div>
@@ -35,7 +47,7 @@
       
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Ingresa nueva categoria</h5>
+          <h5 class="modal-title">{{categoryUpdate == 0 ? "Agregar":"Actualizar"}}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

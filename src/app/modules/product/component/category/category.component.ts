@@ -4,9 +4,9 @@ import { Category } from '../../_model/category';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { SharedModule } from '../../../../shared/shared_module';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 declare var $:any;
-
 
 @Component({
   selector: 'app-category',
@@ -14,22 +14,39 @@ declare var $:any;
   imports: [SharedModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css',
-
 })
 
 export class CategoryComponent {
   form :FormGroup;
-  categories: Category[]=[];
+  categories: any = [];
   submitted: boolean = false;
   swal:SwalMessages = new SwalMessages();
+  categoryUpdate:number=0;
+  faPencil=faPencil;
 
   constructor(private categoryService:CategoyService, private formBuilder:FormBuilder ){
     this.form = this.formBuilder.group({
       category:["",[Validators.required]],
       tag:["",[Validators.required]]
+
   
     });
 
+  }
+  ngOnInit():void{
+    this.categories=this.getCategories();
+  }
+
+  getCategories(){
+    return this.categoryService.getCategories().subscribe({
+      next:(v)=>{
+        this.categories=v;
+        console.log(v);
+      },
+      error:(e)=>{
+        this.swal.errorMessage("No hay un listado de categorias "+e);
+      }
+    });
   }
 
   onSubmit(){
@@ -37,24 +54,79 @@ export class CategoryComponent {
     if(this.form.invalid)return;
     this.submitted=false;
 
-    let id = this.categories.length + 1;
-    let category = new Category(id, this.form.controls["category"].value!,this.form.controls["tag"].value,1);
-    this.categories.push(category)
-
-    this.hideModalForm();
-
-    this.swal.successMessage("La categoria ha sido registrada");
-
+    this.onSubmitCreate();
+    if(this.categoryUpdate==0){
+      this.onSubmitCreate();
+    }else{
+      console.log("TRUE");
+      this.onSubmitUpdate();
+    }
   }
 
-  getCategories():void{
-    this.categories = this.categoryService.getCategories();
+  onSubmitCreate(){
+    this.categoryService.createCategory(this.form.value).subscribe({
+      next:(v) =>{
+        this.swal.successMessage("La categoria ha sido creada");
+        this.getCategories();
+        this.hideModalForm();
+      
+      },
+      error: (e) =>{
+        this.swal.errorMessage("No se pudo crear la categoria");
+      }
+    });
   }
 
-  ngOnInit():void{
-    this.getCategories();
+  updateCategory(category:Category){
+    this.categoryUpdate = category.category_id;
+
+    this.form.reset();
+    this.form.controls['category'].setValue(category.category);
+    this.form.controls['tag'].setValue(category.tag);
+
+    console.log(this.form.value);
+    this.submitted = false;
+    console.log(this.categoryUpdate);
+    $("#modalForm").modal("show");
   }
 
+  onSubmitUpdate(){
+    this.categoryService.updateCategory(this.form.value, this.categoryUpdate).subscribe({
+      next:(v) => {
+        this.swal.successMessage("La categoria ha sido actualizada");
+        this.getCategories();
+        this.hideModalForm();
+        this.categoryUpdate =0;
+      }, error: (e)=>{
+        this.swal.errorMessage("No se pudo actualizar la categoria. "+e); 
+      }
+    });
+  }
+  enableCategory(id:number){
+    this.categoryService.activateCategory(id).subscribe({
+      next:(v)=>{
+        this.swal.successMessage("La categoria ha sido activada");
+        this.getCategories();
+
+      },error:(e)=>{
+        this.swal.errorMessage("No se pudo activar la categoria"); 
+      }
+    });
+  }
+
+  disableCategory(id:number){
+    this.categoryService.deleteCategory(id).subscribe({
+      next:(v)=>{
+        this.swal.successMessage("La categoria ha sido eliminada");
+        this.getCategories();
+
+      },error:(e)=>{
+        this.swal.errorMessage("No se pudo eliminar la categoria"); 
+      }
+    });
+  }
+
+ 
   showModalForm():void{
     this.submitted = false;
     this.form.reset();

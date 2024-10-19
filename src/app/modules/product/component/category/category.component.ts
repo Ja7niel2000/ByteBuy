@@ -44,7 +44,7 @@ export class CategoryComponent {
         console.log(v);
       },
       error:(e)=>{
-        this.swal.errorMessage("No hay un listado de categorias "+e);
+        this.swal.errorMessage("No hay un listado de categorias ");
       }
     });
   }
@@ -98,7 +98,7 @@ export class CategoryComponent {
         this.hideModalForm();
         this.categoryUpdate =0;
       }, error: (e)=>{
-        this.swal.errorMessage("No se pudo actualizar la categoria. "+e); 
+        this.swal.errorMessage("No se pudo actualizar la categoria. "); 
       }
     });
   }

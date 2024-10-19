@@ -8,7 +8,6 @@ export const authenticationGuard: CanActivateFn = (route, state) => {
   if(!estaLogeado){
     console.log("No esta logeado.");
     return inject(Router).navigate(['/login']);
-
   }
   return true;
 };

@@ -1,40 +1,43 @@
 <div class="card mt-5 pb-1 bg-info bs5-">
     <div class="card-header d-flex justify-content-between align-items-center"> 
         <h1 class=" text-center text-white">Categorías</h1>
-        <button class="btn btn-primary" data-bs-toggle="modal"(click)="showModalForm()"> Nueva categoría</button>
+        <button *ngIf="admin" class="btn btn-primary" data-bs-toggle="modal"(click)="showModalForm()"> Nueva categoría</button>
     </div>
     <table class="card-body table">
         <thead>
             <tr>
-                <th >ID</th>
-                <th >Categoría</th>
-                <th >Tag</th>
-                <th >Estado</th>
-                <th>Editar</th>
+
+                <th class="user-select-none">ID</th>
+                <th class="user-select-none" >Categoría</th>
+                <th class="user-select-none">Tag</th>
+                <th class="user-select-none">Estado</th>
+                <th class="user-select-none" *ngIf="admin">Editar</th>
+
             </tr>
         </thead>
         <tbody>
           
-            <tr *ngFor="let category of categories; track category">
+            <tr *ngFor="let category of categories">
                 <td  scope="row">{{category.category_id}} </td>
                 <td>{{category.category}} </td>
                 <td>{{category.tag}} </td>
                 <td>
-                  <a *ngIf="category.status == 0" (click)="enableCategory(category.category_id)">
-                    <div class="td-status td-status-disable">
-                      {{"inactivo"}}
+                  <a *ngIf="category.status == 0" (click)=" admin? enableCategory(category.category_id):null">
+                    <div [ngClass]='admin? "d-inline":"d-inline user-select-none"' [attr.role]="admin? 'button':''">
+                      inactivo
                     </div>
                   </a>
-                  <a *ngIf="category.status == 1" (click)="disableCategory(category.category_id)">
-                    <div class="td-status td-status-enable">
-                      {{"activo"}}
+
+                  <a *ngIf="category.status == 1" (click)=" admin? disableCategory(category.category_id):null">
+                    <div [ngClass]='admin? "d-inline":"d-inline user-select-none"'  [attr.role]="admin? 'button':''">
+                      activo
                     </div>
                   </a>
 
                 </td>
-                <td>
-                  <a (click)="updateCategory(category)" >
-                    <fa-icon [icon]="faPencil"></fa-icon>
+                <td *ngIf="admin" class="d-flex justify-content-center" >
+                  <a role="button" (click)="updateCategory(category)" >
+                    <fa-icon class="" [icon]="faPencil"></fa-icon>
                   </a>
                 </td>
             </tr>
@@ -45,9 +48,9 @@
 <div class="modal fade" tabindex="-1" id="modalForm" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       
-      <div class="modal-content">
+      <div  *ngIf="modal=='normal'"class="modal-content">
         <div class="modal-header">
-          <!-- <h5 class="modal-title">{{categoryUpdate == 0 ? "Agregar":"Actualizar"}}</h5> -->
+          <h5 class="modal-title">Agregar</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -70,7 +73,6 @@
               </div>
             
              
-           
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btn-save">Agregar</button>
               </div>
@@ -79,6 +81,56 @@
        
  
       </div>
+
+      <div *ngIf="modal=='update'" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Actualizar</h5>
+          <button (click)="modal='normal'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+
+                <label for="category" class="form-label">Categoría<span class="input-required">*</span></label>
+                <input type="text" class="form-control" formControlName="category" id="category" placeholder="Nombre de la categoria" [ngClass]="{'is-invalid':form.controls['category'].errors && submitted}">
+                @if (form.controls['category'].errors && submitted){
+                  <small class="invalid-feedback">Favor de ingresar un nombre de categoria valido</small>
+                }
+              </div>
+              <div class="mb-3">
+                <label for="tag" class="form-label">Tag<span class="input-required">*</span></label>
+                <input type="text" class="form-control" formControlName="tag" id="tag" placeholder="Etiqueta" [ngClass]="{'is-invalid':form.controls['tag'].errors && submitted}">
+                @if (form.controls['tag'].errors && submitted){
+                  <small class="invalid-feedback">Favor de ingresar una etiqueta valida</small>
+                }
+              </div>
+            
+             
+              <div class="modal-footer">
+                <button (click)="modal='delete'" type="button" class="btn btn-warning btn-save">Eliminar</button>
+                <button type="submit" class="btn btn-primary btn-save">Aceptar</button>
+              </div>
+          </form>
+        </div>
+       
+ 
+      </div>
+
+      <div *ngIf="modal=='delete'" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Seguro que quieres eliminar la categoria?</h5>
+          <button (click)="modal='normal'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+          <button (click)="modal='update'" type="button" class="btn btn-success btn-save">CANCELAR</button>
+          <button type="submit" class="btn btn-danger btn-save">ELIMINAR</button>
+
+        </div>
+       
+ 
+      </div>
+
     </div>
   </div>
   

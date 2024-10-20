@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CategoyService } from '../../_service/categoy.service';
 import { Category } from '../../_model/category';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -21,8 +21,10 @@ export class CategoryComponent {
   categories: any = [];
   submitted: boolean = false;
   swal:SwalMessages = new SwalMessages();
-  categoryUpdate:number=0;
+  modal:String="normal";
   faPencil=faPencil;
+  admin:any =(window.localStorage.getItem("user")?.match(/"rol":"(.*?)"/)?.[1])=="ADMIN"? true:false ;
+  id:any =null;
 
   constructor(private categoryService:CategoyService, private formBuilder:FormBuilder ){
     this.form = this.formBuilder.group({
@@ -35,6 +37,7 @@ export class CategoryComponent {
   }
   ngOnInit():void{
     this.categories=this.getCategories();
+    console.log(this.admin);
   }
 
   getCategories(){
@@ -54,13 +57,11 @@ export class CategoryComponent {
     if(this.form.invalid)return;
     this.submitted=false;
 
-    this.onSubmitCreate();
-    if(this.categoryUpdate==0){
-      this.onSubmitCreate();
-    }else{
-      console.log("TRUE");
-      this.onSubmitUpdate();
-    }
+      if(this.modal=="normal")      this.onSubmitCreate();
+      else                          this.onSubmitUpdate();
+    
+    this.modal="normal";
+
   }
 
   onSubmitCreate(){
@@ -72,36 +73,37 @@ export class CategoryComponent {
       
       },
       error: (e) =>{
-        this.swal.errorMessage("No se pudo crear la categoria");
+        this.swal.errorMessage("No se pudo crear la categoria"+e.error.message);
+      }
+    });
+  }
+
+  onSubmitUpdate(){
+    this.categoryService.updateCategory(this.form.value,this.id).subscribe({
+      next:(v) => {
+        this.swal.successMessage("La categoria ha sido actualizada");
+        this.getCategories();
+        this.hideModalForm();
+        this.modal ="normal";
+      }, error: (e)=>{
+        this.swal.errorMessage("No se pudo actualizar la categoria. "+e.error.message); 
       }
     });
   }
 
   updateCategory(category:Category){
-    this.categoryUpdate = category.category_id;
+    this.modal = "update";
+    this.id = category.category_id;
 
     this.form.reset();
     this.form.controls['category'].setValue(category.category);
     this.form.controls['tag'].setValue(category.tag);
 
-    console.log(this.form.value);
     this.submitted = false;
-    console.log(this.categoryUpdate);
     $("#modalForm").modal("show");
   }
 
-  onSubmitUpdate(){
-    this.categoryService.updateCategory(this.form.value, this.categoryUpdate).subscribe({
-      next:(v) => {
-        this.swal.successMessage("La categoria ha sido actualizada");
-        this.getCategories();
-        this.hideModalForm();
-        this.categoryUpdate =0;
-      }, error: (e)=>{
-        this.swal.errorMessage("No se pudo actualizar la categoria. "); 
-      }
-    });
-  }
+ 
   enableCategory(id:number){
     this.categoryService.activateCategory(id).subscribe({
       next:(v)=>{

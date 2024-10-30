@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CategoyService } from '../../_service/categoy.service';
+import { CategoryService } from '../../_service/category.service';
 import { Category } from '../../_model/category';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { SwalMessages } from '../../../../shared/swal-messages';
@@ -26,7 +26,7 @@ export class CategoryComponent {
   admin:any =(window.localStorage.getItem("user")?.match(/"rol":"(.*?)"/)?.[1])=="ADMIN"? true:false ;
   id:any =null;
 
-  constructor(private categoryService:CategoyService, private formBuilder:FormBuilder ){
+  constructor(private categoryService:CategoryService, private formBuilder:FormBuilder ){
     this.form = this.formBuilder.group({
       category:["",[Validators.required]],
       tag:["",[Validators.required]]

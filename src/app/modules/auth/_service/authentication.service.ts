@@ -34,6 +34,9 @@ export class AuthenticationService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');    
   }
+  public isAdmin():Boolean{
+    return (window.localStorage.getItem("user")?.match(/"rol":"(.*?)"/)?.[1])=="ADMIN"? true:false
+  }
 
   public saveToken(token: string): void {
     this.token = token;

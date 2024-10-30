@@ -1,0 +1,32 @@
+
+.navbar{
+    background-color: var(--main-color);
+}
+
+.navbar-nav{
+    flex-direction: column-reverse;
+}
+
+.nav-link,.navbar-brand,.dropdown-item{
+    color: var(--text-color) !important;
+}
+
+.dropdownImg{
+    /* height: 25px; */
+}
+
+.userImg{
+    width: 40px;
+}
+
+.dropdown-menu{
+    color: var(--text-color);
+    background-color: var(--main-color);
+    margin-top: 10px;
+}
+
+.dropdown-item:hover{
+    background-color: var(--hover1-color) !important;
+
+
+}

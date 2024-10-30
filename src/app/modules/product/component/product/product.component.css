@@ -1,0 +1,12 @@
+.card{
+    margin-top: 20%;
+}
+.bytebuy-text {
+    background: #000;
+    font-family: 'bungee',Arial, sans-serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: #7843e6; /* Color principal del texto */
+    text-shadow: 
+    2px -2px 0px #00ffff, -2px 2px 0px #ff00ff
+}

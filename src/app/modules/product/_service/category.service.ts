@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoyService {
+export class CategoryService {
 
   private source ="/category";
   constructor(private http:HttpClient) { }

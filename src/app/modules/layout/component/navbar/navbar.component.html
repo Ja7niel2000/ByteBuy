@@ -1,19 +1,42 @@
 <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+    <nav class="navbar navbar-expand-md fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Desarrollo Web Frontend</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" role="button" (click)="redirect(['home'])">Inicio</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            @for(item of navItems; track item) {
-                <app-nav-item [item]="item">
-                </app-nav-item>
-            }
+
+        <div class="collapse navbar-collapse " id="navbarNav">
+          <ul class="navbar-nav w-100 flex-md-row">
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">Categorias</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#"></a>
+            </li>
+
+            <!-- <li>Carrito</li> -->
+            <div class="dropdownImg dropstart ms-md-auto">
+              <img src="user.png" class="userImg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              
+              <ul class="dropdown-menu">
+                <li *ngIf="!logged"><a  class="dropdown-item" role="button" (click)="redirect(['login'])">Inicia sesion</a></li>
+                <li *ngIf="!logged"><a class="dropdown-item" role="button" (click)="redirect(['register'])">Registrate</a></li>
+
+                <li *ngIf="logged"><a class="dropdown-item" role="button" (click)="redirect(['register'])">Perfil</a></li>
+                <li *ngIf="logged"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+                
+                <li *ngIf="admin" class="dropdown-item" role="button" (click)="redirect(['product'])"><a>Admin</a></li>
+              </ul>
+            </div>
+
+
           </ul>
         </div>
+    
       </div>
     </nav>
   </header>

@@ -7,6 +7,8 @@ import { ProductService } from '../../_service/product.service';
 import { SharedModule } from '../../../../shared/shared_module';
 import { CategoryService } from '../../_service/category.service';
 import { Router } from '@angular/router';
+import {  faGear,faEye, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+
 
 declare var $: any; // JQuery
 
@@ -29,6 +31,10 @@ export class ProductComponent {
   loading = false; // loading request
   submitted = false; // Form submitted
   swal: SwalMessages = new SwalMessages(); // swal messages
+  faGear=faGear;
+  faEye=faEye;
+  faCircleCheck=faCircleCheck;
+  faCircleXmark=faCircleXmark;
 
   constructor(
     private categoryService: CategoryService,

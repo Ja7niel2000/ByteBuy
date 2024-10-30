@@ -48,22 +48,22 @@
                         <td>
                           <div class="dropdown">
                             <!-- dots button  -->
-                            <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+                            <button class="dropdown-button btn btn-primary" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                              <fa-icon role="button" [icon]="faGear"></fa-icon>
                             </button>
         
                             <!-- menu options -->
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" (click)="showProduct(product.gtin)" >
-                                <i class="ph ph-eye icon-text-ul"></i>Ver detalles
+                              <a role="button" class="dropdown-item" (click)="showProduct(product.gtin)" >
+                                <fa-icon [icon]="faEye"></fa-icon> Ver detalles
                               </a>
                               @if(product.status != 0){
-                                <a class="dropdown-item disable-item" (click)="disableProduct(product.product_id)">
-                                  <i class="ph ph-x-circle icon-text-ul"></i>Desactivar
+                                <a role="button" class="dropdown-item disable-item" (click)="disableProduct(product.product_id)">
+                                  <fa-icon role="button" class="text-danger" [icon]="faCircleXmark"></fa-icon> Desactivar
                                 </a>
                               }@else {
-                                <a class="dropdown-item enable-item" (click)="enableProduct(product.product_id)">
-                                  <i class="ph ph-check-circle icon-text-ul"></i>Activar
+                                <a role="button" class="dropdown-item enable-item" (click)="enableProduct(product.product_id)">
+                                  <fa-icon  class="text-success" [icon]="faCircleCheck"></fa-icon> Activar
                                 </a>
                               }
                             </div>

@@ -1,12 +1,13 @@
 
 .homeTitle {
-    background: #000;
-    font-family: 'bungee',Arial, sans-serif;
+    
     font-weight: bold;
     user-select: none;
-    color: #7843e6; /* Color principal del texto */
+    background: #000;
+    font-family: 'bungee',Arial, sans-serif;
+    color: var(--main-color); /* Color principal del texto */
     text-shadow: 
-    2px -2px 0px #00ffff, -2px 2px 0px #ff00ff;
+    2px -2px 0px var(--secondary-color), -2px 2px 0px var(--tertiary-color);
 
 }
 @media(min-width:0px){

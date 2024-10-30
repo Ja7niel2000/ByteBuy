@@ -1,23 +1,17 @@
     <div class="card">
-        <div class="card-header d-flex justify-content-between">
+        <div class="card-header d-flex justify-content-between h4">
             
-                <div class="">
-                    <span class="btn-return" (click)="redirect(['product'])">
-                        <i class="ph ph-arrow-circle-left icon-text-button"></i>
-                        Regresar
-                    </span>
+                <div class=""(click)="redirect(['product'])">
+                    <fa-icon role="button" class="btn-return" [icon]="faArrowLeft"></fa-icon>
                 </div>
     
-                <div class="">
-                    <span class="edit-product"(click)="updateProduct()" >
-                        <i class="ph ph-note-pencil icon-text-button"></i>
-                        Editar producto
-                    </span>
+                <div role="button" class="edit-product"(click)="updateProduct()" >
+                        <fa-icon  class="btn-return" [icon]="faPencil"></fa-icon> Editar
                 </div>
            
         </div>
         <br>
-        <div class="card-body-product row align-items-center ">
+        <div class="card-body-product p-3 row align-items-center ">
             <!-- img -->
              <div class="col-md-4 col-lg-3">
                 <div class="card m-0 w-100">
@@ -29,7 +23,7 @@
                         <div class="carousel-inner">
                             <div *ngFor="let prod of productImgList; let i = index" class="carousel-item" [class.active]="i === 0">
                                 <div class="carousel-del z-3 position-relative">
-                                    <a (click)="deleteProductImage(prod.product_image_id)" class="trash color-danger"><fa-icon [icon]="faTrash"></fa-icon></a>
+                                    <a (click)="deleteProductImage(prod.product_image_id)" class="trash p-2 d-inline trash text-danger"><fa-icon [icon]="faTrash"></fa-icon></a>
                                 </div>
                                 <img src="{{ prod.image !== '' ? prod.image : 'noimg.jpg'}}" class="d-block w-100" alt="...">
                             </div>
@@ -51,7 +45,7 @@
                     
                             <div class="carousel-item active">
                                 <div *ngIf="productImgList[0]?.image" class="carousel-del">
-                                    <a (click)="deleteProductImage(productImgList[0].product_image_id)" class="trash"><fa-icon role="button" [icon]="faTrash"></fa-icon></a>
+                                    <a (click)="deleteProductImage(productImgList[0].product_image_id)" class="trash p-2 d-inline trash text-danger"><fa-icon role="button" [icon]="faTrash"></fa-icon></a>
                                 </div>
                                 <img [src]="productImgList[0]?.image ? productImgList[0].image:'noimg.jpg' " class="d-block w-100" alt="...">
                             </div>
@@ -70,7 +64,7 @@
             <!--Table-->
             <div class="col-md-8 col-lg-9">
                 <table class="table">
-                    <thead class="">{{product.product}}</thead>
+                    <thead class="h1">{{product.product}}</thead>
                     <tbody>
 
                         <!-- gtin -->
@@ -106,15 +100,14 @@
                 </table>
             </div>
         </div>
-
+        <!--Modal-->
         <div class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog" id="modalForm">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Editar producto</h5>
-                        <button type="button" class="modal-close-button" data-bs-dismiss="modal" aria-label="Close">
-                            <span class="modal-close-button-x">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                     </div>
                     <div class="modal-body">
     

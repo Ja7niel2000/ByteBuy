@@ -18,4 +18,19 @@ body{
     margin-top: 56px;
     background-color:var(--bg-color) ;
 }
+.styledTitle {
+    
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    font-family: 'bungee',Arial, sans-serif;
+    color: var(--main-color); /* Color principal del texto */
+    text-shadow: 
+    1px -1px 0px var(--secondary-color), -1px 1px 0px var(--tertiary-color);
+    transition: transform 0.3s ease;
+
+}
+.styledTitle:hover{
+    transform: scale(1.1);
+}
 

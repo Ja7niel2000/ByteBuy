@@ -10,7 +10,7 @@ import { SharedModule } from '../../../../shared/shared_module';
 import { ProductImageService } from '../../_service/product-image.service';
 import { ProductImage } from '../../_model/product-image';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faArrowLeft,faPencil } from '@fortawesome/free-solid-svg-icons';
 
 declare var $: any; // JQuery
 
@@ -32,6 +32,8 @@ export class ProductImageComponent {
   form:FormGroup;
   submitted:Boolean=false;
   faTrash=faTrashAlt;
+  faArrowLeft=faArrowLeft;
+  faPencil=faPencil;
 
   constructor(
     private categoryService:CategoryService,
@@ -92,14 +94,22 @@ export class ProductImageComponent {
   }
 
   deleteProductImage(id:any){
-    this.productImgService.deleteProductImage(id).subscribe({
-      next:(v)=>{
-        this.swal.successMessage('Imagen eliminada exitosamente');
-        this.ngOnInit();
-
-      },
-      error:(e)=> this.swal.errorMessage(e.error.message)
+    this.swal.confirmMessage.fire({
+      title: "Favor de confirmar la eliminación",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.productImgService.deleteProductImage(id).subscribe({
+          next:(v)=>{
+            this.swal.successMessage('Imagen eliminada exitosamente');
+            this.ngOnInit();
+    
+          },
+          error:(e)=> this.swal.errorMessage(e.error.message)
+        });
+        
+      }
     });
+   
     
   }
   getProductImage(){

@@ -1,7 +1,7 @@
 <header>
-    <nav class="navbar navbar-expand-md fixed-top">
+    <nav class="navbar navbar-expand-md fixed-top p-1 flex-column fixed-top ">
       <div class="container-fluid">
-        <a class="navbar-brand styledTitle" role="button" (click)="redirect(['home'])">Inicio</a>
+        <a class="navbar-brand styledTitle" role="button"  routerLink="/home">Inicio</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -10,26 +10,42 @@
         <div class="collapse navbar-collapse " id="navbarNav">
           <ul class="navbar-nav w-100 flex-md-row">
 
-            <li class="nav-item">
-              <a class="nav-link" href="#">Categorias</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+              <ul class="dropdown-menu">
+
+                <li >
+                  @for(category of categories;track category.category_id){
+                  <a class="dropdown-item" role="button"  routerLink="/categoria">{{category.category}}</a>
+                  }
+                </li>
+
+              </ul>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="#"></a>
+            <li *ngIf="auth.isAdmin" class="nav-item dropdown">
+              <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item " role="button" routerLink="/categoria">categoria</a></li>
+                <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
+                <li><a class="dropdown-item " role="button" >clientes</a></li>
+                <li><a class="dropdown-item " role="button" >Facturas</a></li>
+                <li><a class="dropdown-item " role="button">Region</a></li>
+              </ul>
             </li>
 
             <!-- <li>Carrito</li> -->
+            <fa-icon [icon]="faCartShopping"></fa-icon>
             <div class="dropdownImg dropstart ms-md-auto">
-              <img src="user.png" class="userImg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="noimgW.png" class="userImg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               
               <ul class="dropdown-menu">
-                <li *ngIf="!logged"><a  class="dropdown-item" role="button" (click)="redirect(['login'])">Inicia sesion</a></li>
-                <li *ngIf="!logged"><a class="dropdown-item" role="button" (click)="redirect(['register'])">Registrate</a></li>
+                <li *ngIf="!auth.isUserLoggedIn()"><a  class="dropdown-item" role="button"  routerLink="/login">Inicia sesion</a></li>
+                <li *ngIf="!auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/register">Registrate</a></li>
 
-                <li *ngIf="logged"><a class="dropdown-item" role="button" (click)="redirect(['register'])">Perfil</a></li>
-                <li *ngIf="logged"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+                <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/secured">Perfil</a></li>
+                <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
                 
-                <li *ngIf="admin" class="dropdown-item" role="button" (click)="redirect(['product'])"><a>Admin</a></li>
               </ul>
             </div>
 
@@ -38,5 +54,8 @@
         </div>
     
       </div>
+
     </nav>
+
+ 
   </header>

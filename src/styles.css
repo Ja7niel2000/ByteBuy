@@ -1,10 +1,16 @@
 :root{
 --main-color:#7843e6;
+--main-color1:#000;
+--appgrey-color:#212529;
+--transparent-color:#00000011;
+--main-complementary-color:#B1E643;
 --secondary-color:#ff00ff;
+--main-mono-color:#5A1DD9;
 --tertiary-color:#00ffff;
 --text-color:#ffffff;
 --invText-color:#000000;
 --bg-color:#000000;
+--invbg-color:#ffffff;
 --hover1-color:#925ff8;
 --hover2-color:#ff43ff;
 --hover3-color:#4fffff;
@@ -15,11 +21,10 @@
 body{
     width: 100vw;
     height: 100vh;
-    margin-top: 56px;
+    margin-top: 100px;
     background-color:var(--bg-color) ;
 }
 .styledTitle {
-    
     font-weight: bold;
     user-select: none;
     cursor: pointer;
@@ -30,7 +35,81 @@ body{
     transition: transform 0.3s ease;
 
 }
+
+.styledTitleNoAnim{
+    /* font-weight: bold; */
+    /* user-select: none; */
+    font-family: 'bungee',Arial, sans-serif;
+    color: var(--main-color); /* Color principal del texto */
+    text-shadow: 
+    1px -1px 0px var(--secondary-color), -1px 1px 0px var(--tertiary-color);
+}
+
+
 .styledTitle:hover{
     transform: scale(1.1);
 }
 
+.dropdown-item{
+    color: var(--text-color) !important;
+}
+
+.dropdown-menu{
+    color: var(--text-color);
+    background-color: var(--main-mono-color);
+    margin-top: 10px;
+}
+
+.dropdown-item:hover{
+    background-color: var(--hover1-color) !important;
+}
+
+.modal-header{
+    background-color: var(--main-mono-color);
+    color: var(--text-color);
+}
+.modal-title{
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.modal-body{
+    background-color: var(--appgrey-color);
+    color: var(--text-color);
+}
+.bg-main{
+    background-color: var(--main-color);
+}
+.bg-mono{
+    background-color: var(--main-mono-color);
+}
+.bg-comp{
+    background-color: var(--main-complementary-color);
+}
+.bg-appgrey{
+    background-color: var(--appgrey-color);
+}
+.text-color{
+    color: var(--text-color);
+}
+.invText-color{
+    color:var(--invText-color);
+}
+
+.main-color{
+    color: var(--main-color);
+}
+.comp-color{
+    color:var(--main-complementary-color);
+}
+.app-button{
+    background-color: var(--main-color);
+    color: var(--text-color);
+    border: 1px solid transparent;
+    padding: 5px;
+    font-weight: bold;
+    border-radius: 8px;
+}
+.app-button:hover{
+    background-color: var(--hover1-color);
+
+}

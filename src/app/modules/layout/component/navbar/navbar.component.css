@@ -1,32 +1,39 @@
-
-.navbar{
-    background-color: var(--main-color);
+.navBar{
+    background-color:var(--main-color);
 }
 
-.navbar-nav{
-    flex-direction: column-reverse;
+.navBarContainer{
+    list-style-type: none !important;
 }
 
-.nav-link,.navbar-brand,.dropdown-item{
+.nav-link,.navbar-brand{
     color: var(--text-color) !important;
+    text-decoration: none !important;
 }
 
-.dropdownImg{
-    /* height: 25px; */
+.faBars{
+    color: var(--text-color);
+}
+.faBars:hover{
+    color:var(--main-complementary-color);
+
+}
+
+.nav-link:hover,.dropdown-item:hover{
+    color:var(--main-complementary-color) !important;
+    
+
 }
 
 .userImg{
     width: 40px;
 }
-
-.dropdown-menu{
+hr{
     color: var(--text-color);
-    background-color: var(--main-color);
-    margin-top: 10px;
+}
+@media(min-width:768px){
+    .responsiveMenu{
+        display: none !important;
+    }
 }
 
-.dropdown-item:hover{
-    background-color: var(--hover1-color) !important;
-
-
-}

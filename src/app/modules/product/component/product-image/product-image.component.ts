@@ -17,7 +17,7 @@ declare var $: any; // JQuery
 @Component({
   selector: 'app-product-image',
   standalone: true,
-  imports: [CommonModule,SharedModule],
+  imports: [SharedModule],
   templateUrl: './product-image.component.html',
   styleUrl: './product-image.component.css'
 })
@@ -34,7 +34,7 @@ export class ProductImageComponent {
   faTrash=faTrashAlt;
   faArrowLeft=faArrowLeft;
   faPencil=faPencil;
-
+  cantidad:number=0;
   constructor(
     private categoryService:CategoryService,
     private productService:ProductService,
@@ -68,10 +68,12 @@ export class ProductImageComponent {
 
   fileChangeHandler($event:any){    
     this.photoService.open($event,{
+      format:"png",
       aspectRatio: 7 / 8,
       autoCropArea: 1,
       resizeToWidth: 315,
-      resizeToHeight: 360
+      resizeToHeight: 360,
+      mask:false
     }).subscribe(data=>{
       this.productImg.product_id = this.product.product_id;
       this.productImg.image = data.base64!;

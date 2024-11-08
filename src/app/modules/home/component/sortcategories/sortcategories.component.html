@@ -1,0 +1,27 @@
+
+<div class="subTitleContainer">
+    <h1 class="bg-main text-color styledTitleNoAnim ps-2">{{category.category}}</h1>
+</div>
+
+<div class="gridC">
+    @for(product of products; track product.product_id;let i = $index){
+        
+    <div class="d-flex " >
+        <div  class="card box" role="button" routerLink="{{'/producto/'+product.gtin}}">
+            @if(category.category!='Todo'){<img class="" src="{{product.image? product.image:'noimg.jpg'}}">}
+            @else if(sortedProductImgs[i]?.image){<img class="" src="{{sortedProductImgs[i].image}}">}
+            <h5 class="px-3">{{product.product}}</h5>
+            <p class="price px-3 ">{{product.price | currency: 'USD'}}</p>
+        </div>
+        <!-- <p>{{product?.cart? product.cart.}}</p> -->
+        @if(cart.length!=0 && product.cart) {
+            <span role="button" class="position-absolute cartIcon"(click)="addToCart(product)" ><fa-icon [icon]="faCartShopping"></fa-icon>{{product.cart.quantity}}</span>
+        }
+        @else{
+            <span role="button" class="position-absolute cartIcon" (click)="addToCart(product)"><fa-icon [icon]="faCartShopping"></fa-icon>0</span>
+        }
+    </div>  
+   
+    }
+    <!-- Repite para más tarjetas -->
+</div>

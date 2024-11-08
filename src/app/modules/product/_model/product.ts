@@ -3,9 +3,9 @@ export class Product{
     product: string = "";
     gtin: string = "";
     description: string = "";
+    category:String="";
     price: number = 0;
     stock: number = 0;
     category_id: number = 0;
     status: number = 0;
-    category:String="";
 }

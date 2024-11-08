@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+
+@Injectable(
+    {
+        //el injector es root 
+        //el inyector se encarga de crear instancias del servicio
+        providedIn: 'root' 
+    })
 export class NavService {
     showClass: any = false;
     public currentUrl = new BehaviorSubject<any>(undefined);

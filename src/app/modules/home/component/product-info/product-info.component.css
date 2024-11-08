@@ -1,0 +1,14 @@
+.lol{
+    height: 100vh;
+}
+.imgColumn{
+    max-width: 540px;
+}
+h4{
+    color: var(--main-color);
+}
+.productDescription{
+    overflow-y: auto;
+    max-height: 300px;
+    
+}

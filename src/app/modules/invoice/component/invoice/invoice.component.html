@@ -1,0 +1,50 @@
+
+  <div class="card border-0">
+    <div class="card-header bg-main">
+        <h1 class="styledTitleNoAnim m-0 text-color">Listado de facturas</h1>
+    </div>
+    <div class="row card-body px-5">
+        <div class="col p-0">
+            <div class="w-100">
+              
+                <div class="row p-0 py-3 m-0 align-items-center text-color bg-mono">
+                    <div class="col-2  p-0 m-0 d-flex justify-content-center">#</div>
+                    <div class="col-2  p-0 m-0 d-flex justify-content-center">Código</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Monto T.</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Fecha</div>
+                    <div class="col-2  p-0 m-0 d-flex justify-content-center">Más</div>
+                </div>
+
+                <div class="w-100 p-0 m-0 lol">
+                    @for(invoice of invoices; track invoice.invoice_id; let i = $index ){
+                        <div class="row border m-0 p-0 align-items-center py-3">   
+                            <div class="col-2  p-0 m-0 d-flex justify-content-center " > {{i+1}}</div>
+                            <div class="col-2  p-0 m-0 d-flex justify-content-center">{{invoice.invoice_id}}</div>
+                            <div class="col  p-0 m-0 d-flex justify-content-center">{{ invoice.total | currency: 'USD' }}</div>
+                            <div class="col  p-0 m-0 d-flex justify-content-center">{{ invoice.created_at | date: 'dd/MM/yyyy' }}</div>
+                            <div class="col-2  p-0 m-0 d-flex justify-content-center" role="button"> 
+                              <div class="dropdown">
+                              <!-- dots button  -->
+                                <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+                                </button>
+            
+                                <!-- menu options -->
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" routerLink="{{'/facturas/'+invoice.invoice_id}}">
+                                      <i class="ph ph-eye icon-text-ul"></i>Ver detalles
+                                    </a>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+      <small>{{ current_date | date: 'dd/MMM/yyyy, h:mm a' }}</small>
+    </div>
+</div>

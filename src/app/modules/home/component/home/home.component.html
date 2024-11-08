@@ -1,3 +1,66 @@
+<canvas class="d-none"></canvas>
 <div class="home ">
-    <h1 class="homeTitle ">BYTEBUY</h1>
+    <div class="welcomeContainer">
+        <h3 class="homUpTitle">Bienvenido a</h3>
+        <h1 class="homeTitle ">BYTEBUY</h1>
+    </div>
+   
+
+    <p class="homeSubTitle p-2 p-md-0">
+        En Bytebuy encuentras todo lo que necesitas para llevar tu experiencia de juego al máximo: videojuegos, consolas de última generación y tarjetas de regalo. ¡Prepárate para descubrir tu próxima aventura!
+    </p>
+    <hr class="text-whit">
+    <section class="novedades">
+        <h4 class=" h2 styledTitleNoAnim p-3">Ofertas en juegos, consolas y mucho más!</h4>
+        <div class="row itemsContainer flex-nowrap">
+            @for(product of section1;track product.product_id; let i = $index){ 
+                <div class="col-3 itemsColums ">
+                    
+                    <div class="card mx-4 homeCardItem " role="button" routerLink="{{'/producto/'+product.gtin}}">
+                        <img class="productImg" src="{{product.image? product.image: 'noimg.jpg'}}">
+                        <h5 class="ProductName px-3">{{product.product}}</h5>
+                        <p class="price  px-3">{{product.price  | currency: 'USD'}}</p>
+                    </div>
+    
+                </div>
+            }
+        </div>
+
+    </section>
+    <section class="ofertas ">
+        <h4 class="styledTitleNoAnim h2 styledTitleNoAnim p-3">Juegos</h4>
+        <div class=" itemsContainer row flex-nowrap">
+            @for(product of section2;track product.product_id){
+                <div class="itemsColums col-3">
+                    <div class="card mx-4 homeCardItem" role="button" routerLink="{{'/producto/'+product.gtin}}">
+                        <img class="productImg" src="{{product.image? product.image: 'noimg.jpg'}}">
+                        <h5 class="px-3">{{product.product}}</h5>
+                        <p class="price  px-3">{{product.price | currency: 'USD'}}</p>
+                    </div>
+                </div>
+    
+    
+            }
+
+        </div>
+    </section>
+
+    <section class="tarjetas">
+        <h4 class="styledTitleNoAnim h2 styledTitleNoAnim p-3">Tarjetas</h4>
+        <div class=" itemsContainer row flex-nowrap">
+            @for(product of section3;track product.product_id){
+                <div class="itemsColums col-3">
+                    <div class="card mx-4 homeCardItem" role="button" routerLink="{{'/producto/'+product.gtin}}">
+                        <img class="productImg" src="{{product.image? product.image: 'noimg.jpg'}}">
+                        <h5 class="ProductName px-3">{{product.product}}</h5>
+                        <p class="price  px-3">{{product.price | currency: 'USD'}}</p>
+                    </div>
+                </div>
+    
+    
+            }
+
+        </div>
+      
+    </section>
 </div>

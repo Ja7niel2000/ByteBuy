@@ -4,6 +4,7 @@ import { SwalMessages } from '../../../../shared/swal-messages';
 import { InvoiceService } from '../../_service/invoice.service';
 import { SharedModule } from '../../../../shared/shared_module'; 
 import { Router } from '@angular/router';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-invoice',
@@ -19,6 +20,7 @@ export class InvoiceComponent {
   current_date = new Date(); // hora y fecha actual
   loading = false; // loading request 
   swal: SwalMessages = new SwalMessages(); // swal messages
+  faEllipsisV=faEllipsisV;
 
   constructor(
     private invoiceService: InvoiceService,

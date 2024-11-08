@@ -1,59 +1,125 @@
 <header>
-    <nav class="navbar navbar-expand-md fixed-top p-1 flex-column fixed-top ">
-      <div class="container-fluid">
-        <a class="navbar-brand styledTitle" role="button"  routerLink="/home">Inicio</a>
+    <nav class="navBar navbar navbar-expand-md p-3 fixed-top">
+        <div class="navBarContainer w-100 align-items-md-center d-flex justify-content-between justify-content-md-start">
+            <a class="navbar-brand styledTitle me-4" role="button"  routerLink="/home">Inicio</a>
+            <div class="navbar-toggler " role="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <fa-icon class="faBars" [icon]="faBars"></fa-icon>
+            </div>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+            <div class="normalMenu align-items-center d-none d-md-flex w-100 justify-content-between">
+                <div class="navLeftItems d-flex ">
 
-        <div class="collapse navbar-collapse " id="navbarNav">
-          <ul class="navbar-nav w-100 flex-md-row">
+                    <li class="nav-item dropdown mx-2">
+                        <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                        <ul class="dropdown-menu">
+          
+                          <li >
+                            <a class="dropdown-item" role="button" routerLink="/categoria/0">Mostrar todo</a>
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
-              <ul class="dropdown-menu">
+                            @for(category of categories;track category.category_id){
+                            <a class="dropdown-item" role="button"  routerLink="{{'/categoria/'+category.category_id}}">{{category.category}}</a>
+                            }
+                          </li>
+          
+                        </ul>
+                      </li>
+                      @if(auth.isAdmin){
+                      <li class="nav-item dropdown mx-2">
+                        <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item " role="button" routerLink="/categoria">categoria</a></li>
+                          <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
+                          <li><a class="dropdown-item " role="button" routerLink="/facturas" >Facturas</a></li>
+                  
+                        </ul>
+                      </li>
+                      }
+                </div>
 
-                <li >
-                  @for(category of categories;track category.category_id){
-                  <a class="dropdown-item" role="button"  routerLink="/categoria">{{category.category}}</a>
+                <div class="navRigthItems d-flex align-items-center ">
+                  @if(auth.isLoggedIn){
+                    <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
                   }
-                </li>
 
-              </ul>
-            </li>
+                    <div class="dropdownImg dropstart ms-md-auto">
+                      <img src="noimgW.png" class="userImg dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <ul class="dropdown-menu">
+                        <li *ngIf="!auth.isUserLoggedIn()"><a  class="dropdown-item" role="button"  routerLink="/login">Inicia sesion</a></li>
+                        <li *ngIf="!auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/register">Registrate</a></li>
+        
+                        <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/secured">Perfil</a></li>
+                        <li><a class="dropdown-item" role="button" (click)="updateMainColor()">Cambiar tema</a></li>
 
-            <li *ngIf="auth.isAdmin" class="nav-item dropdown">
-              <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item " role="button" routerLink="/categoria">categoria</a></li>
-                <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
-                <li><a class="dropdown-item " role="button" >clientes</a></li>
-                <li><a class="dropdown-item " role="button" >Facturas</a></li>
-                <li><a class="dropdown-item " role="button">Region</a></li>
-              </ul>
-            </li>
+                        <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+                  
 
-            <!-- <li>Carrito</li> -->
-            <fa-icon [icon]="faCartShopping"></fa-icon>
-            <div class="dropdownImg dropstart ms-md-auto">
-              <img src="noimgW.png" class="userImg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              
+                        
+                      </ul>
+                    </div>
+
+                </div>
+            </div>
+
+           
+        </div>
+        <div class="responsiveMenu collapse navbar-collapse w-100" id="navbarNav">
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="dropdownImg dropend ms-md-auto">
+              <img src="noimgW.png" class="userImg dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <ul class="dropdown-menu">
                 <li *ngIf="!auth.isUserLoggedIn()"><a  class="dropdown-item" role="button"  routerLink="/login">Inicia sesion</a></li>
                 <li *ngIf="!auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/register">Registrate</a></li>
 
                 <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/secured">Perfil</a></li>
+                <li><a class="dropdown-item" role="button" (click)="updateMainColor()">Cambiar tema</a></li>
                 <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+
                 
               </ul>
             </div>
+            @if(auth.isLoggedIn){
+              <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
+            }
+          </div>
+          <hr>
 
+          <ul class="navbar-nav w-100">
+
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                  <ul class="dropdown-menu">
+                    
+    
+                    <li>
+                      <a class="dropdown-item" role="button" routerLink="/categoria/0">Mostrar todo</a>
+                      @for(category of categories;track category.category_id){
+                      <a class="dropdown-item" role="button"  routerLink="{{'/categoria/'+category.category_id}}">{{category.category}}</a>
+                      }
+                    </li>
+    
+                  </ul>
+                </li>
+
+                @if(auth.isAdmin){
+                  <li class="nav-item dropdown">
+                    <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item " role="button" routerLink="/categoria">categoria</a></li>
+                      <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
+                      <li><a class="dropdown-item " role="button" >clientes</a></li>
+                      <li><a class="dropdown-item " role="button" >Facturas</a></li>
+                      <li><a class="dropdown-item " role="button">Region</a></li>
+                    </ul>
+                  </li>
+
+                }
 
           </ul>
-        </div>
-    
       </div>
+
+    
+      
 
     </nav>
 

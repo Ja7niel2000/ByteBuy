@@ -25,14 +25,14 @@
                             <div class="col-2  p-0 m-0 d-flex justify-content-center" role="button"> 
                               <div class="dropdown">
                               <!-- dots button  -->
-                                <button class="dropdown-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                  <i class="ph ph-dots-three-outline-vertical icon-menu"></i>
+                                <button class="dropdown-button app-button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <fa-icon [icon]="faEllipsisV"></fa-icon>
                                 </button>
             
                                 <!-- menu options -->
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" routerLink="{{'/facturas/'+invoice.invoice_id}}">
-                                      <i class="ph ph-eye icon-text-ul"></i>Ver detalles
+                                      Ver detalles
                                     </a>
                                 </div>
                               </div>

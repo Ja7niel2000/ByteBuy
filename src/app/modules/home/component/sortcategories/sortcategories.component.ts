@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductService } from '../../../product/_service/product.service';
 import { ProductImageService } from '../../../product/_service/product-image.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,6 +8,7 @@ import { SwalMessages } from '../../../../shared/swal-messages';
 import { Category } from '../../../product/_model/category';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../../../invoice/_service/cart.service';
+import { AuthenticationService } from '../../../auth/_service/authentication.service';
 
 
 @Component({
@@ -33,49 +34,26 @@ export class SortcategoriesComponent implements OnInit {
     private productImageService:ProductImageService,
     private categoryService:CategoryService,
     private cartService:CartService,
+    protected auth:AuthenticationService,
   ){}
 
   ngOnInit(){
     this.route.paramMap.subscribe(params=>{
-      this.cartService.getCart().subscribe({
-        next:(v)=>{
-          if(v.length!=0)this.cart=v;
-
-            this.category_id=params.get('category_id');
-            
-          if(this.category_id==0){
-            this.category.category='Todo';
-            this.loadProducts();
-          }
-          else{
-            this.sortedProductImgs=[];
-            this.category.category='';
-            this.categoryService.getCategory(this.category_id).subscribe(category=>this.category=category);
-            this.loadProducts();
-          }
-
-  
-        },error:(e)=>{
-  
-        }
-      });
-      
-
+      this.category_id=params.get('category_id');
+      this.getCart();
       }
     );
- 
-    
   }
 
   loadProducts(){
     this.products=[];
-    if(this.category.category=='Todo'){
+    if(this.category.category=='Mostrando Todos los Productos'){
        this.pService.getProducts().subscribe({
         next:(v)=>{
           for(let i in v){
             if(v[i].status==1){
               
-              if(this.cart){
+              if(this.cart.length!=0){
                 for(let item of this.cart){
                   if(item.product.product_id==v[i].product_id){
                     v[i].cart=item;
@@ -94,10 +72,14 @@ export class SortcategoriesComponent implements OnInit {
             }
           }
 
+          
+        },error:(e)=>this.swal.errorMessage(e.error.message),
+        complete:()=>{
           for(let product of this.products){
             this.getImgs(product.product_id);
           }
-        },error:(e)=>this.swal.errorMessage(e.error.message)
+
+        }
       });
     }
     else{
@@ -105,7 +87,7 @@ export class SortcategoriesComponent implements OnInit {
       next:(v)=>{
         for(let i in v){
           if(v[i].status==1){
-            if(this.cart){
+            if(this.cart.length!=0){
               for(let item of this.cart){
                 if(item.product.product_id==v[i].product_id){
                   v[i].cart=item;
@@ -153,14 +135,12 @@ export class SortcategoriesComponent implements OnInit {
         
   }
 
-
-
-  addToCart(product:any){
-    let data={'quantity':1,'gtin':product.gtin}
-    if(product.cart){
+  addToCart(i:any){
+    let data={'quantity':1,'gtin':this.products[i].gtin}
+    if(this.products[i].cart){
       this.cartService.addToCart(data).subscribe({
         next:(v)=>{
-          product.cart.quantity+=1;
+          this.products[i].cart.quantity+=1;
           this.swal.successMessage(v.message);
         },
         error:(e)=>{
@@ -170,10 +150,10 @@ export class SortcategoriesComponent implements OnInit {
       });
     }
     else{
-      product.cart=data;
+      this.products[i].cart=data;
       this.cartService.addToCart(data).subscribe({
         next:(v)=>{
-          product.cart.quantity=1;
+          this.products[i].cart.quantity=1
           this.swal.successMessage(v.message);
         },
         error:(e)=>{
@@ -185,13 +165,42 @@ export class SortcategoriesComponent implements OnInit {
 
     }
     
-
-
-   
-    
-    
-
   }
 
+  getCart(){
+    if(this.auth.isLoggedIn){
+      console.log('antes')
+      this.cartService.getCart().subscribe({
+        next:v=>{this.cart=v;
+
+        },
+        error:e=>{},
+        complete:()=>{
+          this.fun()
+
+        }
+      })
+
+    }
+    else{
+      this.cart=[];
+      this.fun()
+    }
+
+    
+  }
+
+  fun(){
+    if(this.category_id==0){
+      this.category.category='Mostrando Todos los Productos';
+      this.loadProducts();
+    }
+    else{
+      this.sortedProductImgs=[];
+      this.category.category='';
+      this.categoryService.getCategory(this.category_id).subscribe(category=>this.category=category);
+      this.loadProducts();
+    }
+  }
 
 }

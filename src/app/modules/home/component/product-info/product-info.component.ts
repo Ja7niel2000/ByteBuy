@@ -36,6 +36,7 @@ export class ProductInfoComponent implements OnInit {
     private productService:ProductService,
     private route: ActivatedRoute,
     private cartService:CartService,
+    private router:Router
   ){
   }
 
@@ -58,7 +59,10 @@ export class ProductInfoComponent implements OnInit {
                       if(item.gtin==this.product.gtin)this.product.stock-=item.quantity;
                   }
 
-                },error:(e)=>{}
+                },error:(e)=>{
+                  if(e?.error?.message!='FORBIDDEN')this.swal.errorMessage(e?.error?.message)
+                  }
+                
               })
 
             },
@@ -82,6 +86,12 @@ export class ProductInfoComponent implements OnInit {
       next:(v)=>this.swal.successMessage("Producto agregado al carrito"),
       error:(e)=>{
         if(e.error.message=='La cantidad es inválida')this.swal.errorMessage("Stock Insuficiente");
+        else if (e.error.message=='FORBIDDEN'){
+          this.swal.errorMessage('Inicia sessión para poder hacer esto');
+          this.router.navigateByUrl('/login');
+          
+        }
+
         else this.swal.errorMessage(e.error.message);
       }
     });

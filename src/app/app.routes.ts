@@ -17,11 +17,11 @@ import { CompraExitosaComponent } from './modules/invoice/component/compra-exito
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: '/home',
+        redirectTo: '',
         pathMatch: 'full'
     },
     {
-        path:'home',
+        path:'',
         component: HomeComponent
 
     },

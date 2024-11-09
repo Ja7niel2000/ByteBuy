@@ -1,7 +1,7 @@
 <header>
     <nav class="navBar navbar navbar-expand-md p-3 fixed-top">
         <div class="navBarContainer w-100 align-items-md-center d-flex justify-content-between justify-content-md-start">
-            <a class="navbar-brand styledTitle me-4" role="button"  routerLink="/home">Inicio</a>
+            <a class="navbar-brand styledTitle me-4" role="button"  routerLink="/">Inicio</a>
             <div class="navbar-toggler " role="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <fa-icon class="faBars" [icon]="faBars"></fa-icon>
             </div>
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="navRigthItems d-flex align-items-center ">
-                  @if(auth.isLoggedIn){
+                  @if(auth.isLoggedIn && !auth.isAdmin){
                     <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
                   }
 
@@ -78,7 +78,7 @@
                 
               </ul>
             </div>
-            @if(auth.isLoggedIn){
+            @if(auth.isLoggedIn && !auth.isAdmin){
               <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
             }
           </div>

@@ -9,7 +9,7 @@ import { Category } from '../../../product/_model/category';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../../../invoice/_service/cart.service';
 import { AuthenticationService } from '../../../auth/_service/authentication.service';
-
+import { ProductImage } from '../../../product/_model/product-image';
 
 @Component({
   selector: 'app-sortcategories',
@@ -19,12 +19,12 @@ import { AuthenticationService } from '../../../auth/_service/authentication.ser
   styleUrl: './sortcategories.component.css'
 })
 export class SortcategoriesComponent implements OnInit {
-  products:any=[];
+  products:Array<any>=[];
   cart:Array<any>=[];
-  category_id:any;
   category:Category=new Category;
-  sortedProductImgs:any=[];
-  placeholder:any;
+  category_id:number=this.category.category_id;
+  sortedProductImgs:Array<ProductImage>=[];
+  placeholder:ProductImage = new ProductImage;
   swal:SwalMessages=new SwalMessages;
   faCartShopping=faCartShopping;
 
@@ -37,52 +37,60 @@ export class SortcategoriesComponent implements OnInit {
     protected auth:AuthenticationService,
   ){}
 
-  ngOnInit(){
+  ngOnInit():void{
+    //Esto es para detectar cambios en la ruta
     this.route.paramMap.subscribe(params=>{
-      this.category_id=params.get('category_id');
-      this.getCart();
+      //Agrega el parametro de ruta a la variable category_id 
+      this.category_id=Number(params.get('category_id'));
+      this.products=[];
+
+      //Si category_id es 0 se ejecutan las funciones para mostrar todos los productos
+      if(this.category_id==0){
+        this.category.category='Mostrando Todos los Productos';
+        
+        //se ejecuta la función para saber si se obtiene el carrito o no y
+        //se manda la función loadAllProducts callback
+        this.getCartIfLogged(()=>this.loadAllProducts());
       }
-    );
+      //
+      else{
+        this.sortedProductImgs=[];
+        this.category.category='';
+        this.getCategory();
+      }
+      });
   }
 
-  loadProducts(){
-    this.products=[];
-    if(this.category.category=='Mostrando Todos los Productos'){
-       this.pService.getProducts().subscribe({
-        next:(v)=>{
-          for(let i in v){
-            if(v[i].status==1){
-              
-              if(this.cart.length!=0){
-                for(let item of this.cart){
-                  if(item.product.product_id==v[i].product_id){
-                    v[i].cart=item;
-                    this.products.push(v[i]);
-                    break
-                  }
-                 
-                }
-                if(!v[i].cart)
-                    this.products.push(v[i]);
+  private getCategory():void{
+    //Obtiene La categoria y al terminal la ejecución se manda a llamar la función getCartIfLogged
+    //con callback loadProductsByCategory
+    this.categoryService.getCategory(this.category_id).subscribe({
+      next:(v)=>this.category=v,
+      error:(e)=>this.swal.errorMessage(e.error?.message),
+      complete:()=>this.getCartIfLogged(()=>this.loadProductsByCategory())
+    });
+  }
 
-              }
-              else{
-                this.products.push(v[i]);
-              }
-            }
-          }
-
-          
-        },error:(e)=>this.swal.errorMessage(e.error.message),
-        complete:()=>{
-          for(let product of this.products){
-            this.getImgs(product.product_id);
-          }
-
-        }
-      });
-    }
+  //Obtiene el carrito si el usuario está logeado y no es admin.
+  private getCartIfLogged(fun:()=>void):void{
+    if(this.auth.isLoggedIn && !this.auth.isAdmin)
+      this.getCart(fun);
     else{
+      this.cart=[]
+      fun();
+    }
+  }
+
+  private getCart(fun:()=>void):void{
+    //Se obtiene el carrito y se ejecuta el callback.
+    this.cartService.getCart().subscribe({
+      next:v=>this.cart=v,
+      error:e=>{this.swal.errorMessage(e?.error?.message)},
+      complete:()=>fun()
+    });
+  }
+
+  private loadProductsByCategory():void{
     this.pService.getProductsByCategory(this.category_id).subscribe({
       next:(v)=>{
         for(let i in v){
@@ -94,37 +102,67 @@ export class SortcategoriesComponent implements OnInit {
                   this.products.push(v[i]);
                   break
                 }
-               
               }
               if(!v[i].cart)
                   this.products.push(v[i]);
-
             }
             else{
               this.products.push(v[i]);
             }
-            if(this.products[i].image =='data:image/png;base64,')
-              this.products[i].image='';
+            if(this.products[Number(i)].image =='data:image/png;base64,')
+              this.products[Number(i)].image='noimg.jpg';
           }
         }
-      },error:(e)=>{
+      },error:(e)=>this.swal.errorMessage(e.error?.message)
+    });
 
+  }
+
+  private loadAllProducts():void{
+    this.pService.getProducts().subscribe({
+      next:(v)=>{
+        for(let i in v){
+          if(v[i].status==1){
+            if(this.cart.length!=0){
+              for(let item of this.cart){
+                if(item.product.product_id==v[i].product_id){
+                  v[i].cart=item;
+                  this.products.push(v[i]);
+                  break
+                }
+              }
+              if(!v[i].cart)
+                  this.products.push(v[i]);
+            }
+            else{
+              this.products.push(v[i]);
+            }
+          }
+        }
+      },
+      error:(e)=>this.swal.errorMessage(e.error?.message),
+      complete:()=>{
+        for(let product of this.products)
+          this.getImgs(product.product_id); 
       }
     });
   }
 
-  }
-
-  getImgs(productId:number){
+//Funciones auxiliares para loadAllProducts 
+//####
+  //Obtiene las imagenes de los productos
+  private getImgs(productId:number):void{
     this.productImageService.getProductImage(productId).subscribe({
-      next:(v)=>{
-        this.sortedProductImgs.push(v[0]);
-        if(this.products.length==this.sortedProductImgs.length)this.sortimgs();
-      },error:(e)=>this.swal
+      next:(v)=>this.sortedProductImgs.push(v[0]),
+      error:(e)=>this.swal.errorMessage(e.error?.message),
+      complete:()=>{
+        if(this.products.length==this.sortedProductImgs.length)this.sortimgs()
+      }
     });
   }
 
-  sortimgs(){
+  //Función para ordenar las imagenes
+  private sortimgs():void{
     for(let x:number=0;x<this.products.length;x++)
       for(let y:number=0;y<this.sortedProductImgs.length;y++)
         if(this.products[x].product_id==this.sortedProductImgs[y].product_id){
@@ -134,8 +172,10 @@ export class SortcategoriesComponent implements OnInit {
         }
         
   }
+//####
 
-  addToCart(i:any){
+  //Función para el botón de agregar 1 item al carrito
+  protected addToCart(i:any):void{
     let data={'quantity':1,'gtin':this.products[i].gtin}
     if(this.products[i].cart){
       this.cartService.addToCart(data).subscribe({
@@ -165,42 +205,6 @@ export class SortcategoriesComponent implements OnInit {
 
     }
     
-  }
-
-  getCart(){
-    if(this.auth.isLoggedIn){
-      console.log('antes')
-      this.cartService.getCart().subscribe({
-        next:v=>{this.cart=v;
-
-        },
-        error:e=>{},
-        complete:()=>{
-          this.fun()
-
-        }
-      })
-
-    }
-    else{
-      this.cart=[];
-      this.fun()
-    }
-
-    
-  }
-
-  fun(){
-    if(this.category_id==0){
-      this.category.category='Mostrando Todos los Productos';
-      this.loadProducts();
-    }
-    else{
-      this.sortedProductImgs=[];
-      this.category.category='';
-      this.categoryService.getCategory(this.category_id).subscribe(category=>this.category=category);
-      this.loadProducts();
-    }
   }
 
 }

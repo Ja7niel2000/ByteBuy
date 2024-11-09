@@ -9,12 +9,12 @@
     <div class="d-flex " >
         <div  class="card box" role="button" routerLink="{{'/producto/'+product.gtin}}">
             @if(category.category!='Mostrando Todos los Productos'){<img class="" src="{{product.image? product.image:'noimg.jpg'}}">}
-            @else if(sortedProductImgs[i]?.image){<img class="" src="{{sortedProductImgs[i].image}}">}
+            @else if(sortedProductImgs[i]){<img src="{{sortedProductImgs[i].image}}">}
             <h5 class="px-3">{{product.product}}</h5>
             <p class="price px-3 ">{{product.price | currency: 'USD'}}</p>
         </div>
         <!-- <p>{{product?.cart? product.cart.}}</p> -->
-        @if(auth.isLoggedIn) {
+        @if(auth.isLoggedIn && !auth.isAdmin) {
             <span role="button" class="position-absolute cartIcon" (click)="addToCart(i)"><fa-icon [icon]="faCartShopping"></fa-icon>{{product?.cart?.quantity?  product?.cart?.quantity:'0'}}</span>
 
         }

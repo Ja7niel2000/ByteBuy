@@ -7,6 +7,7 @@ import { InvoiceService } from '../../_service/invoice.service';
 import { Router } from '@angular/router';
 
 declare var $: any; // JQuery
+
 @Component({
   selector: 'app-carrito',
   standalone: true,
@@ -14,6 +15,7 @@ declare var $: any; // JQuery
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
 })
+
 export class CarritoComponent implements OnInit {
   carrito:Array<any>=[];
   swal:SwalMessages=new SwalMessages;
@@ -28,72 +30,69 @@ export class CarritoComponent implements OnInit {
 
   constructor(private cartService:CartService, private invoiceService:InvoiceService, private router:Router){}
 
-  ngOnInit(){
+  public ngOnInit():void{
     this.getCartItems();
   }
 
-  getTotal(){
-     this.total = this.carrito.reduce((acc, item) => acc + item.quantity * item.product.price, 0);   
-  }
-
-
-  getCartItems(){
+  private getCartItems():void{
     this.cartService.getCart().subscribe({
-      next:(v)=>{
-        this.carrito=v;
-        if(v.length>0)
-          this.getTotal();
-        else this.total=0
-      },
-      error:(e)=> this.swal.errorMessage(e?.error?.message)
-
-    })
+      next:(v)=>this.carrito=v,
+      error:(e)=> this.swal.errorMessage(e.error?.message),
+      complete:()=>{
+        if(this.carrito.length>0)this.getTotal();
+        else this.total=0;
+      }
+    });
   }
-  removeFromCart(cartId:number){
+
+  private getTotal():void{
+    this.total = this.carrito.reduce((acc, item) => acc + item.quantity * item.product.price, 0);   
+  }
+
+  protected removeFromCart(cartId:number):void{
     this.cartService.removeFromCart(cartId).subscribe({
-      next:(v)=>{
+      error:(e)=>this.swal.errorMessage(e.error?.message),
+      complete:()=>{
         this.swal.successMessage('Elemento eliminado exitosamente del carrito')
         this.ngOnInit();
-      },
-      error:(e)=>this.swal.errorMessage(e?.error?.message)
-    });
-  }
-
-  clearCart(){
-    this.swal.confirmMessage.fire({
-      title:'Estas segur@ de que quieres vaciar el carrito?'
-
-    }).then(result=>{
-      if(result.isConfirmed){
-        this.cartService.clearCart().subscribe({
-          next:(v)=>{
-            this.swal.successMessage('Carrito vaciado exitosamente'); 
-            this.ngOnInit()
-          },
-          error:(e)=>this.swal.errorMessage(e?.error?.message)
-        });
       }
-    })
-
+    });
   }
 
-  buy(){
-    this.invoiceService.generateInvoice().subscribe({
-      next:(v)=>{
-        this.swal.successMessage('Compra finalizada con exito!');
-        this.hideModal();
-        this.router.navigateByUrl('/compraExitosa');
-      },error:(e)=>this.swal.errorMessage(e.error.message)
+  protected clearCartConfirmation():void{
+    this.swal.confirmMessage.fire({title:'Estas segur@ de que quieres vaciar el carrito?'})
+      .then(result=>{
+        if(result.isConfirmed)this.clearCart();
+      });
+  }
 
+  private clearCart():void{
+    this.cartService.clearCart().subscribe({
+      error:(e)=>this.swal.errorMessage(e?.error?.message),
+      complete:()=>{
+        this.swal.successMessage('Carrito vaciado exitosamente'); 
+        this.ngOnInit()
+      }
     });
 
   }
 
-  showModal(){
+  protected buy():void{
+      this.invoiceService.generateInvoice().subscribe({
+        error:(e)=>this.swal.errorMessage(e.error.message),
+        complete:()=>{
+          this.hideModal();
+          this.swal.successMessage('Compra finalizada con exito!');
+          this.router.navigateByUrl('/compraExitosa');
+        }
+      });
+  }
+
+ protected showModal():void{
     $("#confirmationModal").modal("show");
   }
 
-  hideModal(){
+  protected hideModal():void{
     $("#confirmationModal").modal("hide");
   }
 }

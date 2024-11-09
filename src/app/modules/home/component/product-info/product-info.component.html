@@ -7,12 +7,12 @@
         <div class="col-md-6 align-content-center imgColumn">
             <div id="productCarousel" class="carousel slide" data-bs-ride="true">
                 <div class="carousel-indicators bg-dark">
-                    @for(item of images; track item; let i = $index){
+                    @for(item of images; track item.product_image_id; let i = $index){
                         <button type="button" class="indicator" data-bs-target="#productCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
                     }
                 </div>
                 <div class="carousel-inner">
-                    @for(item of images; track item.product_id;let i=$index){
+                    @for(item of images; track item.product_image_id;let i=$index){
                         <div class="carousel-item" [class.active]="i === 0">
                             <img src="{{item.image}}" class="d-block w-100" alt="Imagen producto 1" >
                         </div>
@@ -32,18 +32,18 @@
         </div>
 
         <div class="col-md-6 align-content-center p-3">
-            <h3>{{product?.product}}</h3>
-            <p class="text-muted">Código de producto: {{product?.gtin}}</p>
-            <h4 class="">{{product?.price | currency: 'USD'}}</h4>
+            <h3>{{product.product}}</h3>
+            <p class="text-muted">Código de producto: {{product.gtin}}</p>
+            <h4 class="">{{product.price | currency: 'USD'}}</h4>
             <p><i class="fas fa-shipping-fast"></i> Envío gratis a todo el país</p>
-            @if(product?.stock!=0){
-                <p class="m-0">Stock disponible: {{product?.stock}}</p>
+            @if(product.stock!=0){
+                <p class="">Stock disponible: {{product.stock}}</p>
                 <form [formGroup]="form"  class="d-flex mb-3 justify-content-between align-items-center" >
-                    <div class="">
+                    <div class="w-50 d-flex flex-column align-items-center">
                         <label for="cantidad" class="mr-2">Cantidad</label>
-                        <input type="number"  formControlName="cantidad" id="cantidad" class="form-control w-50 mr-3" value="1" min="1" max="{{product?.stock}}">
+                        <input type="number"  formControlName="cantidad" id="cantidad" class="form-control w-50 mr-3" value="1" min="1" max="{{product.stock}}">
                     </div>
-                    <button class="app-button" type="button" (click)="addToCart()">Agregar al carrito</button>
+                    <button class="app-button" type="button" (click)="addToCartButton()">Agregar al carrito</button>
                 </form>
             }
             @else{
@@ -55,8 +55,8 @@
 
 
             <div class="mt-4">
-                <p><strong>Categoría</strong>: {{product?.category}}</p>
-                <p class="productDescription p-2"><strong>Descripción</strong>: {{product?.description}}</p>
+                <p><strong>Categoría</strong>: {{product.category}}</p>
+                <p class="productDescription p-2"><strong>Descripción</strong>: {{product.description}}</p>
             </div>
         </div>
     </div>

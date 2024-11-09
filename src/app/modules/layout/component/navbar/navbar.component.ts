@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit {
 
   logOut(){
     this.auth.logOut();
-    this.router.navigate(['home']);
+    this.router.navigate(['']);
     this.swal.successMessage('Session cerrada exitosamente');
   }
 

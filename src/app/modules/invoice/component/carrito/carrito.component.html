@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="w-100 p-0 m-0 lol">
-                    @for(item of carrito; track item){
+                    @for(item of carrito; track item.cart_id){
                         <div class="row border m-0 p-0 align-items-center">   
                             <div class="col-5 ps-1 p-0 m-0  " routerLink="{{'/producto/'+item.product.gtin}}" role="button"><img class="w-25" src="{{item.image}}"> {{item.product.product}}</div>
                             <div class="col  p-0 m-0 d-flex justify-content-center">{{item.product.price | currency: 'USD'}}</div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger" (click)="clearCart()">Eliminar Carrito</button>
+                <button type="button" class="btn btn-danger" (click)="clearCartConfirmation()">Eliminar Carrito</button>
             </div>
         </div>
     </div>

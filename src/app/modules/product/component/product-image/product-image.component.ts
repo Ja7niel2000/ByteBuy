@@ -3,7 +3,6 @@ import { CategoryService } from '../../_service/category.service';
 import { ProductService } from '../../_service/product.service';
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { Product } from '../../_model/product';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared_module';

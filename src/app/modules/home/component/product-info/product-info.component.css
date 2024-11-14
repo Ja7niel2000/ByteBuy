@@ -1,8 +1,9 @@
 .lol{
     min-height: 100vh;
+    max-width: 1200px;
 }
-.imgColumn{
-    max-width: 540px;
+.imgSettings{
+    max-width: 125px;
 }
 h4{
     color: var(--main-color);

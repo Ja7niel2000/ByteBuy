@@ -3,7 +3,6 @@
         <h1 class="styledTitleNoAnim text-color">Tú carrito</h1>
     </div>
 @if(total!=0){
-
     <div class="row card-body px-5">
         <!--Lista-->
         <div class="col p-0">
@@ -19,12 +18,34 @@
 
                 <div class="w-100 p-0 m-0 lol">
                     @for(item of carrito; track item.cart_id){
-                        <div class="row border m-0 p-0 align-items-center">   
-                            <div class="col-5 ps-1 p-0 m-0  " routerLink="{{'/producto/'+item.product.gtin}}" role="button"><img class="w-25" src="{{item.image}}"> {{item.product.product}}</div>
-                            <div class="col  p-0 m-0 d-flex justify-content-center">{{item.product.price | currency: 'USD'}}</div>
-                            <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity}}</div>
-                            <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity*item.product.price | currency: 'USD'}}</div>
-                            <div class="col  p-0 m-0 d-flex justify-content-center text-danger" role="button" ><fa-icon (click)="removeFromCart(item.cart_id)" [icon]="faTrashCan"> </fa-icon></div>
+                        <div class="row border m-0 p-0 align-items-center">  
+                            @if(item.quantity!=-1){
+                                <div class="col-5 ps-1 p-0 m-0  " routerLink="{{'/producto/'+item.product.gtin}}" role="button">
+                                    <div class="d-flex align-items-center ">
+                                        <img class="w-25 imgSettings" src="{{item.image}}">
+                                        <span>{{item.product.product}}</span>
+                                    </div>                                
+                                </div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.product.price | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity*item.product.price | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger" role="button" ><fa-icon (click)="removeFromCart(item.cart_id)" [icon]="faTrashCan"> </fa-icon></div>
+
+                            }
+                            @else{
+                                <div class="col-5 ps-1 p-0 m-0 ">
+                                    <div class="d-flex align-items-center ">
+                                            <img class="w-25 imgSettings" src="{{item.image}}">
+                                            <span>{{item.product.product}}<span class="text-danger"><br>(SIN STOCK)</span></span>
+                                    </div>
+                                </div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger">-</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger">-</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{'0' | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger" role="button" ><fa-icon (click)="removeFromCart(item.cart_id)" [icon]="faTrashCan"></fa-icon></div>
+
+                            } 
+
                         </div>
                         }
 
@@ -61,7 +82,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center">
-                        <button type="button" class="app-button w-100" (click)="showModal()">Comprar</button>
+                        <button type="button" class="app-button w-100" (click)="verifyProductStock()">Comprar</button>
                     </div>
 
                 </div>
@@ -77,10 +98,7 @@
         <h2 class="">No hay nada aquí</h2>
         <p class="">Aún no has agregado cosas a tú carrito</p>
     </div>
-
 }
-
-
 </div>
 <!--Modal-->
 <div class="modal fade"  tabindex="-1" data-bs-backdrop="static" role="dialog" id="confirmationModal">

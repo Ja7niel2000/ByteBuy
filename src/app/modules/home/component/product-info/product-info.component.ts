@@ -56,7 +56,15 @@ export class ProductInfoComponent implements OnInit {
 
   private getProductImage():void{
     this.productImgService.getProductImage(this.product.product_id).subscribe({
-      next:(v)=>this.images=v,
+      next:(v)=>{
+        if( v.length>0)
+          this.images=v
+        else{
+          this.images.push(new ProductImage);
+          this.images[0].image='noimg.jpg';
+        }
+        console.log(this.images)
+    },
       error:(e)=>this.swal.errorMessage(e.error?.message),
       complete:()=>this.isLogged(()=>this.getCart())
     });
@@ -83,7 +91,7 @@ export class ProductInfoComponent implements OnInit {
         next:(v)=>{
           if(v.length!=0){
             for(let item of v){
-              if(item.gtin==this.product.gtin){
+              if(item.gtin==this.product.gtin && this.product.stock!=0){
                 this.product.stock-=item.quantity;
               }
             }

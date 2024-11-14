@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../product/_service/product.service';
 import { ProductImageService } from '../../../product/_service/product-image.service';
 import { ActivatedRoute } from '@angular/router';
@@ -85,7 +85,7 @@ export class SortcategoriesComponent implements OnInit {
     //Se obtiene el carrito y se ejecuta el callback.
     this.cartService.getCart().subscribe({
       next:v=>this.cart=v,
-      error:e=>{this.swal.errorMessage(e?.error?.message)},
+      error:e=>{this.swal.errorMessage(e.error?.message)},
       complete:()=>fun()
     });
   }
@@ -153,10 +153,11 @@ export class SortcategoriesComponent implements OnInit {
   //Obtiene las imagenes de los productos
   private getImgs(productId:number):void{
     this.productImageService.getProductImage(productId).subscribe({
-      next:(v)=>this.sortedProductImgs.push(v[0]),
+      next:(v)=>this.sortedProductImgs.push(v[0]? v[0]:{image:'noimg.jpg'}),
       error:(e)=>this.swal.errorMessage(e.error?.message),
       complete:()=>{
-        if(this.products.length==this.sortedProductImgs.length)this.sortimgs()
+        if(this.products.length==this.sortedProductImgs.length && this.products.length>1)
+          this.sortimgs()
       }
     });
   }

@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   faPlusCircle=faPlusCircle;
   products:Array<any> =[];
   swal:SwalMessages=new SwalMessages;
-  numbers:Array<number>=[];
+  numbers:Array<number>=[0,1,2,3];
   cardsLength:number=4;
   section1:Array<any>=[];
   section2:Array<any>=[];
@@ -34,14 +34,18 @@ export class HomeComponent implements OnInit {
     this.pService.getProducts().subscribe({
       //Guarda los productos
       next:(v)=>this.products=v, 
-      error:(e)=>this.swal.errorMessage(e?.error?.message),
+      error:(e)=>this.swal.errorMessage(e.error?.message),
       complete:()=>{
         //Al terminar el observable se itera a traves de los productos para obtener 
         //la primera imagen de cada producto
         for(let i in this.products)this.getImg(this.products[i].product_id,i);
 
         //funciones para mostrar las secciones de la página de inicio
-        this.setNumbers(this.products.length);
+        console.log(this.products.length)
+        if(this.products.length>3){
+          this.numbers=[];
+          this.setNumbers(this.products.length);
+        }
         this.organizer();
       }
     });
@@ -52,8 +56,8 @@ getImg(productId:number,i:any ):void{
       //Al obtener respuesta verifica si existe la imagen. Si existe, se agrega una nueva
       //propiedad image a cada producto del array products con el valor de la imagen.
       //si no existe se agrega "noimg.jpg"
-      next:(v)=>v[0]? this.products[i].image= v[0].image:'noimg.jpg',
-      error:(e)=>this.swal.errorMessage(e?.error?.message)
+      next:(v)=>v.length>0? this.products[i].image = v[0].image : this.products[i].image='noimg.jpg',
+      error:(e)=>this.swal.errorMessage(e.error?.message)
      });
 
   }

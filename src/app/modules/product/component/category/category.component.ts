@@ -4,7 +4,7 @@ import { Category } from '../../_model/category';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { SwalMessages } from '../../../../shared/swal-messages';
 import { SharedModule } from '../../../../shared/shared_module';
-import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faPencil,faGear } from '@fortawesome/free-solid-svg-icons';
 
 declare var $:any;
 
@@ -18,37 +18,33 @@ declare var $:any;
 
 export class CategoryComponent {
   form :FormGroup;
-  categories: any = [];
+  categories: Array<Category> = [];
   submitted: boolean = false;
   swal:SwalMessages = new SwalMessages();
   modal:String="normal";
   faPencil=faPencil;
   admin:any =(window.localStorage.getItem("user")?.match(/"rol":"(.*?)"/)?.[1])=="ADMIN"? true:false ;
   id:any =null;
+  faGear=faGear;
 
-  constructor(private categoryService:CategoryService, private formBuilder:FormBuilder ){
+  constructor(
+    private categoryService:CategoryService, 
+    private formBuilder:FormBuilder
+  ){
     this.form = this.formBuilder.group({
       category:["",[Validators.required]],
       tag:["",[Validators.required]]
-
-  
     });
-
-  }
-  ngOnInit():void{
-    this.categories=this.getCategories();
-    console.log(this.admin);
   }
 
-  getCategories(){
-    return this.categoryService.getCategories().subscribe({
-      next:(v)=>{
-        this.categories=v;
-        console.log(v);
-      },
-      error:(e)=>{
-        this.swal.errorMessage("No hay un listado de categorias ");
-      }
+  public ngOnInit():void{
+    this.getCategories();
+  }
+
+  private getCategories():void{
+     this.categoryService.getCategories().subscribe({
+      next:(v)=>this.categories=v,
+      error:(e)=>this.swal.errorMessage(e.error?.message)
     });
   }
 
@@ -103,6 +99,17 @@ export class CategoryComponent {
     $("#modalForm").modal("show");
   }
 
+  actiDesButton(id:number,active:boolean){
+    let t1="Seguro que quieres desactivar la categoría?"
+    let t2="Seguro que quieres activar la categoría?"
+    active? this.confirmMsg(()=>this.enableCategory(id),t2):this.confirmMsg(()=>this.disableCategory(id),t1)
+  }
+
+  confirmMsg(call:()=>void,title:string){
+    this.swal.confirmMessage.fire({title})
+    .then(result=>result.isConfirmed? call():null)
+  }
+  
  
   enableCategory(id:number){
     this.categoryService.activateCategory(id).subscribe({
@@ -129,15 +136,14 @@ export class CategoryComponent {
   }
 
  
-  showModalForm():void{
+  protected showModalForm():void{
     this.submitted = false;
     this.form.reset();
     $("#modalForm").modal("show");
   }
 
-  hideModalForm():void{
+  protected hideModalForm():void{
     $("#modalForm").modal("hide");
-
   }
 
 }

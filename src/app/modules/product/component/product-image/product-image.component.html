@@ -1,33 +1,42 @@
-    <div class="card">
-        <div class="card-header d-flex justify-content-between h4">
-            
-                <div class=""(click)="redirect(['product'])">
-                    <fa-icon role="button" class="btn-return" [icon]="faArrowLeft"></fa-icon>
-                </div>
-    
+<div class="container lol my-4">
+   
+        <div class="pt-5 row">
+            <div class="w-100 bg-main d-flex justify-content-between align-items-center text-color">
+                <h1 class="styledTitleNoAnim text-color m-0">Detalles del producto</h1>
                 <div role="button" class="edit-product"(click)="updateProduct()" >
                         <fa-icon  class="btn-return" [icon]="faPencil"></fa-icon> Editar
                 </div>
-           
+
+            </div>
+              
         </div>
-        <br>
-        <div class="card-body-product p-3 row align-items-center ">
+        
+        <div class=" row bg-white ">
             <!-- img -->
-             <div class="col-md-4 col-lg-3">
-                <div class="card m-0 w-100">
-                    <!--If img list >1 -->
-                    <div *ngIf="productImgList.length > 1" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+             <div class="col-md-6  align-content-center">
+                <div  id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                
+                    @if(productImgList.length > 1){
                         <div class="carousel-indicators bg-dark">
-                            <button *ngFor="let item of productImgList; let i = index" type="button" class="indicator" data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
+                            @for(item of productImgList; track item.product_image_id; let i = $index){
+                                <button type="button" class="indicator" data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
+                            }
                         </div>
-                        <div class="carousel-inner">
-                            <div *ngFor="let prod of productImgList; let i = index" class="carousel-item" [class.active]="i === 0">
+                    }
+
+                    <div class="carousel-inner">
+                        @for(prod of productImgList;track prod; let i =$index){
+                            <div class="carousel-item" [class.active]="i === 0">
                                 <div class="carousel-del z-3 position-relative">
-                                    <a (click)="deleteProductImage(prod.product_image_id)" class="trash p-2 d-inline trash text-danger"><fa-icon [icon]="faTrash"></fa-icon></a>
+                                    <a role="button" (click)="deleteProductImage(prod.product_image_id)" class="trash p-2 d-inline trash text-danger"><fa-icon [icon]="faTrash"></fa-icon></a>
                                 </div>
                                 <img src="{{ prod.image !== '' ? prod.image : 'noimg.jpg'}}" class="d-block w-100" alt="...">
                             </div>
-                        </div>
+                        }
+                       
+                    </div>
+
+                    @if(productImgList.length > 1){
                         <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -36,21 +45,9 @@
                             <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
-                    </div>
-    
-                    <!--If img list <=1 -->
-                    <div *ngIf="productImgList.length <= 1" id="carouselExampleIndicators" class="carousel slide"
-                        data-ride="carousel">                        
-                        <div class="carousel-inner">
-                    
-                            <div class="carousel-item active">
-                                <div *ngIf="productImgList[0]?.image" class="carousel-del">
-                                    <a (click)="deleteProductImage(productImgList[0].product_image_id)" class="trash p-2 d-inline trash text-danger"><fa-icon role="button" [icon]="faTrash"></fa-icon></a>
-                                </div>
-                                <img [src]="productImgList[0]?.image ? productImgList[0].image:'noimg.jpg' " class="d-block w-100" alt="...">
-                            </div>
-                        </div>
-                    </div>
+                    }
+            </div>
+                      <!--If img list <=1 -->                  
                     <div class="edit-product-image text-center">
                         <label for="uploadImage" class="cursor-pointer" role="button">
                             <input type="file" (change)="fileChangeHandler($event)" id="uploadImage" hidden>
@@ -58,12 +55,12 @@
                             <p class="item-txt">Añadir imagen</p>
                         </label>
                     </div>
-                </div>
+                
              </div>
 
             <!--Table-->
-            <div class="col-md-8 col-lg-9">
-                <table class="table">
+            <div class="col-md-6 d-flex">
+                <table class="table m-auto">
                     <thead class="h1">{{product.product}}</thead>
                     <tbody>
 
@@ -102,7 +99,7 @@
         </div>
 
         
-    </div>
+  
             <!--Modal-->
             <div class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog" id="modalForm">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -224,3 +221,4 @@
                     </div>
                 </div>
             </div>
+</div>

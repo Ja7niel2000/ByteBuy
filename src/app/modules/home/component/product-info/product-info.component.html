@@ -4,14 +4,20 @@
      </div>
 
     <div class="row bg-white ">
-        <div class="col-md-6 align-content-center imgColumn">
+        <div class="col-md-6 align-content-center">
+
             <div id="productCarousel" class="carousel slide" data-bs-ride="true">
-                <div class="carousel-indicators bg-dark">
-                    @for(item of images; track item.product_image_id; let i = $index){
-                        <button type="button" class="indicator" data-bs-target="#productCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
+                    @if(images.length>1){
+                        <div class="carousel-indicators bg-dark">
+
+                            @for(item of images; track item.product_image_id; let i = $index){
+                                <button type="button" class="indicator" data-bs-target="#productCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
+                            }
+                        </div>
                     }
-                </div>
+                
                 <div class="carousel-inner">
+
                     @for(item of images; track item.product_image_id;let i=$index){
                         <div class="carousel-item" [class.active]="i === 0">
                             <img src="{{item.image}}" class="d-block w-100" alt="Imagen producto 1" >
@@ -19,15 +25,18 @@
 
                     }
                 </div>
+                @if(images.length>1){
+                    <button class="carousel-control-prev"  type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </button>
+                }
+               
 
-                <button class="carousel-control-prev"  type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
-                    <span class="sr-only">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
-                    <span class="sr-only">Siguiente</span>
-                </button>
             </div>
         </div>
 
@@ -48,7 +57,7 @@
             }
             @else{
                 <div class="d-flex mb-3">
-                    <p class="text-muted m-0">Producto Agotado</p>
+                    <p class="m-0 text-danger">Producto Agotado</p>
                 </div>
 
             }

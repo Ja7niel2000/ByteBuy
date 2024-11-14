@@ -8,7 +8,7 @@
         
     <div class="d-flex " >
         <div  class="card box" role="button" routerLink="{{'/producto/'+product.gtin}}">
-            @if(category.category!='Mostrando Todos los Productos'){<img class="" src="{{product.image? product.image:'noimg.jpg'}}">}
+            @if(category.category!='Mostrando Todos los Productos'){<img class="" src="{{product.image}}">}
             @else if(sortedProductImgs[i]){<img src="{{sortedProductImgs[i].image}}">}
             <h5 class="px-3">{{product.product}}</h5>
             <p class="price px-3 ">{{product.price | currency: 'USD'}}</p>

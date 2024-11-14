@@ -1,0 +1,39 @@
+.navBar{
+    background-color:var(--main-color);
+}
+
+.navBarContainer{
+    list-style-type: none !important;
+}
+
+.nav-link,.navbar-brand{
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+}
+
+.faBars{
+    color: var(--text-color);
+}
+.faBars:hover{
+    color:var(--main-complementary-color);
+
+}
+
+.nav-link:hover,.dropdown-item:hover{
+    color:var(--main-complementary-color) !important;
+    
+
+}
+
+.userImg{
+    width: 40px;
+}
+hr{
+    color: var(--text-color);
+}
+@media(min-width:768px){
+    .responsiveMenu{
+        display: none !important;
+    }
+}
+

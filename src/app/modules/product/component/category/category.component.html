@@ -1,48 +1,69 @@
-<div class="card mt-5 pb-1 bg-info bs5-">
-    <div class="card-header d-flex justify-content-between align-items-center"> 
-        <h1 class=" text-center text-white">Categorías</h1>
+<div class="card mt-5 pb-1 bs5- border-0">
+    <div class="card-header d-flex justify-content-between align-items-center bg-main "> 
+        <h1 class=" text-center text-white styledTitleNoAnim color-text">Categorías</h1>
         <button *ngIf="admin" class="btn btn-primary" data-bs-toggle="modal"(click)="showModalForm()"> Nueva categoría</button>
     </div>
-    <table class="card-body table">
-        <thead>
-            <tr>
 
+    <div class="card-body">
+    
+      <table class="table">
+        <thead class="thead-dark">
+            <tr class="table-primary">
                 <th class="user-select-none">ID</th>
-                <th class="user-select-none" >Categoría</th>
+                <th class="user-select-none">Categoría</th>
                 <th class="user-select-none">Tag</th>
                 <th class="user-select-none">Estado</th>
-                <th class="user-select-none" *ngIf="admin">Editar</th>
-
+                @if(admin){<th class="user-select-none text-center">Editar</th>}
             </tr>
         </thead>
         <tbody>
-          
-            <tr *ngFor="let category of categories">
-                <td  scope="row">{{category.category_id}} </td>
-                <td>{{category.category}} </td>
-                <td>{{category.tag}} </td>
-                <td>
-                  <a *ngIf="category.status == 0" (click)=" admin? enableCategory(category.category_id):null">
-                    <div [ngClass]='admin? "d-inline":"d-inline user-select-none"' [attr.role]="admin? 'button':''">
-                      inactivo
-                    </div>
-                  </a>
+          @for(category of categories;track category.category_id){
+            <tr>
+              <td>{{category.category_id}}</td>
+              <td>{{category.category}}</td>
+              <td>{{category.tag}}</td>
+              <td>
+                @if(category.status==0){
+                    inactivo
+                }
+                @else{
+                  Activo
+                }
+              </td>
+              @if(admin){
+                <td class="text-center">
+                  <div class="dropdown">
+                    <button class="dropdown-button btn btn-primary" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <fa-icon role="button" [icon]="faGear"></fa-icon>
+                    </button>
 
-                  <a *ngIf="category.status == 1" (click)=" admin? disableCategory(category.category_id):null">
-                    <div [ngClass]='admin? "d-inline":"d-inline user-select-none"'  [attr.role]="admin? 'button':''">
-                      activo
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a role="button" class="dropdown-item" (click)="updateCategory(category)" >
+                        <fa-icon class="" [icon]="faPencil"></fa-icon>Editar
+                      </a>
+                      @if(category.status != 0){
+                        <a role="button" class="dropdown-item disable-item" (click)="actiDesButton(category.category_id,false)" >
+                          <fa-icon role="button" class="text-danger" ></fa-icon> Desactivar
+                        </a>
+                      }@else {
+                        <a role="button" class="dropdown-item enable-item" (click)="actiDesButton(category.category_id,true)" >
+                          <fa-icon  class="text-success" ></fa-icon> Activar
+                        </a>
+                      }
                     </div>
-                  </a>
+                  </div>
+                </td>
 
-                </td>
-                <td *ngIf="admin" class="d-flex justify-content-center" >
-                  <a role="button" (click)="updateCategory(category)" >
-                    <fa-icon class="" [icon]="faPencil"></fa-icon>
-                  </a>
-                </td>
-            </tr>
+              }
+            
+
+          </tr>
+
+          }
+           
         </tbody>
     </table>
+  </div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modalForm" tabindex="-1" data-bs-backdrop="static">
@@ -78,8 +99,6 @@
               </div>
           </form>
         </div>
-       
- 
       </div>
 
       <div *ngIf="modal=='update'" class="modal-content">
@@ -108,7 +127,6 @@
             
              
               <div class="modal-footer">
-                <button (click)="modal='delete'" type="button" class="btn btn-warning btn-save">Eliminar</button>
                 <button type="submit" class="btn btn-primary btn-save">Aceptar</button>
               </div>
           </form>
@@ -116,21 +134,6 @@
        
  
       </div>
-
-      <div *ngIf="modal=='delete'" class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Seguro que quieres eliminar la categoria?</h5>
-          <button (click)="modal='normal'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body d-flex justify-content-center">
-          <button (click)="modal='update'" type="button" class="btn btn-success btn-save">CANCELAR</button>
-          <button type="submit" class="btn btn-danger btn-save">ELIMINAR</button>
-
-        </div>
-       
- 
-      </div>
-
     </div>
   </div>
   

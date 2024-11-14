@@ -6,12 +6,16 @@ import { api_dwb_uri } from '../../../shared/api-dwb-uri';
 import { User } from '../_model/user';
 import { LoginResponse } from '../_model/login-response';
 
+//Decorador
 @Injectable({
+  //Provider
   providedIn: 'root'
 })
 export class AuthenticationService {
 
   private token: string | null;
+  public isLoggedIn:boolean=false;
+  public isAdmin:boolean= false;
   private loggedInUsername: string | null;
   private jwtHelper = new JwtHelperService();
 
@@ -21,6 +25,7 @@ export class AuthenticationService {
   }
 
   public login(credenciales: {username?: string, password?: string}): Observable<HttpResponse<LoginResponse>> {
+    this.isAdminF();
     return this.http.post<LoginResponse>(`${api_dwb_uri}/login`, credenciales, { observe: 'response' });
   }
 
@@ -29,10 +34,15 @@ export class AuthenticationService {
   }
 
   public logOut(): void {
+    this.isAdmin=false;
+    this.isLoggedIn=false;
     this.token = null;
     this.loggedInUsername = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');    
+    localStorage.clear();
+  }
+  public isAdminF():Boolean{
+
+     return this.isAdmin=(window.localStorage.getItem("user")?.match(/"rol":"(.*?)"/)?.[1])=="ADMIN"? true:false;
   }
 
   public saveToken(token: string): void {
@@ -67,6 +77,9 @@ export class AuthenticationService {
       if (this.jwtHelper.decodeToken(this.token).sub != null || '') {
         if (!this.jwtHelper.isTokenExpired(this.token)) {
           this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
+          this.isLoggedIn=true;
+          this.isAdminF();
+          
           return true;
         }
       }

@@ -1,0 +1,72 @@
+<div class="container my-4 lol">
+     <div class="pt-5 row">
+        <h1  class="styledTitleNoAnim bg-main text-color m-0"> Info del producto</h1>
+     </div>
+
+    <div class="row bg-white ">
+        <div class="col-md-6 align-content-center">
+
+            <div id="productCarousel" class="carousel slide" data-bs-ride="true">
+                    @if(images.length>1){
+                        <div class="carousel-indicators bg-dark">
+
+                            @for(item of images; track item.product_image_id; let i = $index){
+                                <button type="button" class="indicator" data-bs-target="#productCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0" [attr.aria-label]="'Slide ' + i"></button>
+                            }
+                        </div>
+                    }
+                
+                <div class="carousel-inner">
+
+                    @for(item of images; track item.product_image_id;let i=$index){
+                        <div class="carousel-item" [class.active]="i === 0">
+                            <img src="{{item.image}}" class="d-block w-100" alt="Imagen producto 1" >
+                        </div>
+
+                    }
+                </div>
+                @if(images.length>1){
+                    <button class="carousel-control-prev"  type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </button>
+                }
+               
+
+            </div>
+        </div>
+
+        <div class="col-md-6 align-content-center p-3">
+            <h3>{{product.product}}</h3>
+            <p class="text-muted">Código de producto: {{product.gtin}}</p>
+            <h4 class="">{{product.price | currency: 'USD'}}</h4>
+            <p><i class="fas fa-shipping-fast"></i> Envío gratis a todo el país</p>
+            @if(product.stock!=0){
+                <p class="">Stock disponible: {{product.stock}}</p>
+                <form [formGroup]="form"  class="d-flex mb-3 justify-content-between align-items-center" >
+                    <div class="w-50 d-flex flex-column align-items-center">
+                        <label for="cantidad" class="mr-2">Cantidad</label>
+                        <input type="number"  formControlName="cantidad" id="cantidad" class="form-control w-50 mr-3" value="1" min="1" max="{{product.stock}}">
+                    </div>
+                    <button class="app-button" type="button" (click)="addToCartButton()">Agregar al carrito</button>
+                </form>
+            }
+            @else{
+                <div class="d-flex mb-3">
+                    <p class="m-0 text-danger">Producto Agotado</p>
+                </div>
+
+            }
+
+
+            <div class="mt-4">
+                <p><strong>Categoría</strong>: {{product.category}}</p>
+                <p class="productDescription p-2"><strong>Descripción</strong>: {{product.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>

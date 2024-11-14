@@ -62,7 +62,15 @@ export class LoginComponent {
           }          
         },
         (errorResponse: HttpErrorResponse) => {
-          alert(errorResponse.error.message);
+          if(errorResponse.status==412){
+            localStorage.clear();
+            return this.onLogin();
+          }
+          try {
+            alert(errorResponse.error.message);
+          }catch(e:any){
+            console.log('error '+errorResponse.status)
+          }
           this.showLoading = false;
         }
       )

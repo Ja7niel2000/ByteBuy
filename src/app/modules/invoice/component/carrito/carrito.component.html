@@ -1,0 +1,171 @@
+<div class="card border-0">
+    <div class="card-header bg-main ">
+        <h1 class="styledTitleNoAnim text-color">Tú carrito</h1>
+    </div>
+@if(total!=0){
+    <div class="row card-body px-5">
+        <!--Lista-->
+        <div class="col p-0">
+            <div class="w-100">
+              
+                <div class="row bg-mono p-0 py-3 m-0 align-items-center text-color">
+                    <div class="col-5  p-0 m-0 d-flex ps-2">Productos</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Precio</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Cant.</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Total</div>
+                    <div class="col  p-0 m-0 d-flex justify-content-center">Más</div>
+                </div>
+
+                <div class="w-100 p-0 m-0 lol">
+                    @for(item of carrito; track item.cart_id){
+                        <div class="row border m-0 p-0 align-items-center">  
+                            @if(item.quantity!=-1){
+                                <div class="col-5 ps-1 p-0 m-0  " routerLink="{{'/producto/'+item.product.gtin}}" role="button">
+                                    <div class="d-flex align-items-center ">
+                                        <img class="w-25 imgSettings" src="{{item.image}}">
+                                        <span>{{item.product.product}}</span>
+                                    </div>                                
+                                </div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.product.price | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{item.quantity*item.product.price | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger" role="button" ><fa-icon (click)="removeFromCart(item.cart_id)" [icon]="faTrashCan"> </fa-icon></div>
+
+                            }
+                            @else{
+                                <div class="col-5 ps-1 p-0 m-0 ">
+                                    <div class="d-flex align-items-center ">
+                                            <img class="w-25 imgSettings" src="{{item.image}}">
+                                            <span>{{item.product.product}}<span class="text-danger"><br>(SIN STOCK)</span></span>
+                                    </div>
+                                </div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger">-</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger">-</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center">{{'0' | currency: 'USD'}}</div>
+                                <div class="col  p-0 m-0 d-flex justify-content-center text-danger" role="button" ><fa-icon (click)="removeFromCart(item.cart_id)" [icon]="faTrashCan"></fa-icon></div>
+
+                            } 
+
+                        </div>
+                        }
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-danger" (click)="clearCartConfirmation()">Eliminar Carrito</button>
+            </div>
+        </div>
+    </div>
+    <div class="row card-body justify-content-center">
+        <div class="col col-lg-4 card p-0 m-1">
+            <div class="">
+                <div class="card-header">
+                    <h5>Resumen del pedido</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <p class="col-6 m-0">Subtotal</p>
+                        <p class="col-6 m-0">{{total | currency: 'USD'}}</p>
+                    </div>
+                    <div class="row">
+                        <p class="col-6 m-0">Descuentos</p>
+                        <p class="col-6 m-0">{{'0'| currency:'USD'}}</p>
+                    </div>
+                    <div class="row">
+                        <p class="col-6 m-0">Costo de envío</p>
+                        <p class="col-6 m-0">{{'0'| currency:'USD'}}</p>
+                    </div>
+                    <div class="row">
+                        <p class="col-6 m-0"><strong> Total</strong></p>
+                        <p class="col-6 m-0"><strong>{{total| currency:'USD'}}</strong></p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="app-button w-100" (click)="verifyProductStock()">Comprar</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+@else{
+    <div class="d-flex flex-column justify-content-center noItems align-items-center">
+        <span class=""><fa-icon [icon]="faCircleExclamation"></fa-icon></span>
+        <h2 class="">No hay nada aquí</h2>
+        <p class="">Aún no has agregado cosas a tú carrito</p>
+    </div>
+}
+</div>
+<!--Modal-->
+<div class="modal fade"  tabindex="-1" data-bs-backdrop="static" role="dialog" id="confirmationModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen">
+      <div class="modal-content max m-auto">
+        <div class="modal-header">
+          <h5 class="modal-title text-complementary">Confirmar compra</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row mb-3 rounded-4">
+                        <h3>Cliente</h3>
+                        <p><fa-icon class="" [icon]="faUser"> </fa-icon> Victor Manuel</p>
+                    </div>
+                    <div class="row my-3 rounded-4">
+                        <h3>Dirección de envío</h3>
+                        <p><fa-icon class="" [icon]="faLocation"> </fa-icon> Investigación Científica, C.U. Coyoacán, 04510 CDMX</p>
+                    </div>
+                    <div class="row my-3 rounded-4">
+                        <h3>Información de pago</h3>
+                        <p><fa-icon class="" [icon]="faCreditCard"> </fa-icon> XXXX-XXXX-XXXX-1235</p>
+                    </div>
+                    <div class="row mt-3 rounded-4">
+                        <h3>Total de Productos</h3>
+                        <p><fa-icon class="" [icon]="faListOl"></fa-icon> 1</p>
+                    </div>
+                </div>
+                <div class="col col-sm-8 col-md-4 ">
+                   <div class="card">
+                    <div class="card-header">
+                        <h2>Resumen de compra</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <p class="col-6 m-0">Subtotal</p>
+                            <p class="col-6 m-0">{{total | currency: 'USD'}}</p>
+                        </div>
+                        <hr class="mt-0" >
+                        <div class="row">
+                            <p class="col-6 m-0">Descuentos</p>
+                            <p class="col-6 m-0">{{'0'| currency:'USD'}}</p>
+                        </div>
+                        <hr class="mt-0" >
+                        <div class="row">
+                            <p class="col-6 m-0">Costo de envío</p>
+                            <p class="col-6 m-0">{{'0'| currency:'USD'}}</p>
+                        </div>
+                        <hr class="mt-0" >
+                        <div class="row">
+                            <p class="col-6 m-0"><strong> Total</strong></p>
+                            <p class="col-6 m-0"><strong>{{total| currency:'USD'}}</strong></p>
+                        </div>
+                    </div>
+                    <div class="card-footer mt-0 w-100">
+                        <button class="app-button w-100" (click)="buy()"><fa-icon [icon]="faBagShopping"></fa-icon>  Finalizar Compra</button>
+                    </div>
+
+                   </div>
+                    
+                </div>
+
+            </div>
+           
+
+        </div>
+      </div>
+    </div>
+  </div>

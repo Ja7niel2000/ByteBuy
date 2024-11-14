@@ -1,0 +1,119 @@
+<div class="bg-main">
+    <h1 class="bg-main text-color styledTitleNoAnim ps-2">Detalle de factura</h1>
+</div>
+<div class=" bg-white p-2">
+    <div class="row flex-wrap">
+        <div class="col-12 col-lg-6">
+            <div class="row">
+                <div class="col-4">
+                    <p>RFC emisor:</p>
+                    <p>Nombre emisor:</p>
+                    <p>RFC receptor:</p>
+                    <p>Nombre receptor:</p>
+                    <p>Régimen fiscal:</p>
+                    <p>Uso CFDI:</p>
+                </div>
+                <div class="col-8">
+                    <p>UNAM231128FAC</p>
+                    <p>Desarrollo Web Frontend 2024-1</p>
+                    <p>{{invoice.rfc}}</p>
+                    <p>Carlos López</p>
+                    <p>General ley personas morales</p>
+                    <p>Gastos en general</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="row">
+                <div class="col-4">
+                    <p>Folio fiscal:</p>
+                    <p>Nombre emisor:</p>
+                    <p>No. serie CSD:</p>
+                    <p>Fecha emisión:</p>
+                    <p>Hora emisión:</p>
+                    <p>Efecto de comprobante:</p>
+                </div>
+                <div class="col-8">
+                    <p>1</p>
+                    <p>Desarrollo Web Frontend 2024-1</p>
+                    <p>0000100000051613241</p>
+                    <p>18/04/2024</p>
+                    <p>12:00 AM</p>
+                    <p>Ingreso</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="col p-0">
+            <div class="w-100">
+              
+                <div class="row bg-mono p-0 py-3 m-0 align-items-center text-color">
+                    <div class="col-1  p-0 m-0 d-flex ps-2">No.</div>
+                    <div class="col-3  p-0 m-0 d-flex justify-content-center">GTIN</div>
+                    <div class="col-1  p-0 m-0 d-flex justify-content-center">Cant.</div>
+                    <div class="col-3  p-0 m-0 d-flex justify-content-center">Costo. U</div>
+                    <div class="col-1  p-0 m-0 d-flex justify-content-center">Impuestos</div>
+                    <div class="col-3  p-0 m-0 d-flex justify-content-center">Imp. Total</div>
+                </div>
+
+                <div class="w-100 p-0 m-0 lol">
+                    @for(item of invoice.items; track item;let i = $index){
+                        <div class="row border m-0 p-0 align-items-center ">   
+                            <div class="col-1 ps-1 p-0 m-0  ">{{i+1}}</div>
+                            <div class="col-3  p-0 m-0 d-flex justify-content-center">{{item.gtin}}</div>
+                            <div class="col-1  p-0 m-0 d-flex justify-content-center">{{item.quantity}}</div>
+                            <div class="col-3  p-0 m-0 d-flex justify-content-center">{{item.unit_price|currency:'USD'}}</div>
+                            
+                            <div class="col-1  p-0 m-0 d-flex justify-content-center">{{item.taxes|currency:'USD'}}</div>
+                            <div class="col-3  p-0 m-0 d-flex justify-content-center">{{item.total |currency:'USD'}}</div>
+
+
+                        </div>
+                        }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        
+    </div>
+    <div class="row">
+        <p><strong>Sello Digital del CFDI:</strong></p>
+        <p>CVpUI/9ygOLXDooVmSGyq2XmENx5PWZ0hL4IIRNAyqUMPFw2A+Xy6pT6m28af/h93mtx4ohw424gRZYsB98MTsmjO565jCH3RKY/hGoxP/7L5fqubrPLUyCODFpPbyeYmWhkUp9zilsxqVKvcRl+js0TZ2DJzWVo7t03/SL86KEC7ciXnMuWCpLfRaOPH0gc5ahwVk/fn2D1Xo9VsHZiSDz96LTR6U3KttEoRquVawrFC2jgWmcgKnUP6TlFnxWW/SACGXLW9iTRaKHdoCM46L3T+Cun18oQaaWjNrFOIPne4b4uYFHJmM0tAZZZKgqrjfPDQdvBG2rBdwxoW</p>
+    </div>
+    <div class="row">
+        <p><strong>Sello Digital del SAT:</strong></p>
+        <p>N6nJaymDeP2LV7NWz2rZVewpaCDTUMnmOO3BzPMj7QGcslwqacNB2oqSi8cVAIOaRxpxKWFh1SE2a1Ft0nRGK9hxw4V4jgwk9z2xXJjZNedbQFqk7SqWySa4y27DzWolpTfiwi+4jgiRptrZtnQ5b3M+wC5wH/598FkDmq8+tnCtvdUpldYg8o2Jko9KL8owE3CVP7NwzHIAlHW2HS2MPBM5xT4oSgBY+wsa0SyGEJBpg3jFAdDRqcgcdaB0MiURe/cKYjFKdmRiODH1B9In8p/qnxUwH4GGslEm</p>
+        
+    </div>
+    <div class="row">
+        <div class="col-4 col-lg-2 d-flex">
+            <img class="w-100 m-auto" src="QR.png">
+        </div>
+        <div class="col col-lg-10">
+            <p>Cadena Original del complemento de certificación digital del SAT:</p>
+            <p>SAT970701NN3|CVpUI/9ygOLXDooVmSGyq2XmENx5PWZ0hL4IIRNAyqUMPFw2A+Xy6pT6m28af/h93mtx4ohw424gRZYsB98MTsmjO565jCH3RKY/hGoxP/7L5fqubrPLUyCODFpPbyeYmWhkUp9zilsxqVKvcRl+js0TZ2DJzWVo7t03/SL86KEC7ciXnMuWCpLfRaOPH0gc5ahwVk/fn2D1Xo9VsHZiSDz96LTR6U3KttEoRquVawrFC2jgWmcgKnUP6TlFnxWW/SACGXLW9iTRaKHdoCM46L3T+Cun18oQaaWjNrFOIPne4b4uYFHJmM0tAZZZKgqrjfPDQdvBG2rBdwxoW</p>
+            <div class="row">
+                <div class="col-6">
+                    <p>RFC del proveedor de certificación:</p>
+                    <p>No. de serie del certificado SAT:</p>
+                    <p>Fecha y hora de la certificación:</p>
+                </div>
+                <div class="col-6">
+                    <p>SAT970701NN3</p>
+                    <p>0000100000044650</p>
+                    <p>May 17, 2024 at 5:19:47 PM GMT-6</p>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        
+    </div>
+
+</div>

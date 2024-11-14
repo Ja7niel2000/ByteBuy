@@ -1,0 +1,29 @@
+.gridC{
+    display: grid;
+    grid-template-columns: 5fr,1fr,1fr,2fr;
+    grid-template-rows: 190px;
+}
+.item{
+    border-left: 1px solid var(--invText-color);
+}
+
+.lol{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.modal-fullscreen{
+    height: auto!important;
+}
+.max{
+    max-width: 1200px;
+
+}
+.noItems{
+    height: 50vh;
+}
+.noItems span{
+    font-size: 100px;
+    color: var(--main-color);
+}
+

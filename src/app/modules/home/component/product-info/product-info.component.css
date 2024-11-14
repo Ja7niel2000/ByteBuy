@@ -1,0 +1,15 @@
+.lol{
+    min-height: 100vh;
+    max-width: 1200px;
+}
+.imgSettings{
+    max-width: 125px;
+}
+h4{
+    color: var(--main-color);
+}
+.productDescription{
+    overflow-y: auto;
+    max-height: 300px;
+    
+}

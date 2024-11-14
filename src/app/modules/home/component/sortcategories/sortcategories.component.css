@@ -1,0 +1,39 @@
+.subTitleContainer{
+    padding: 50px 0 0 0;
+
+}
+.gridC {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 250px); /* Mantiene un ancho fijo de 200px por cuadro */
+    grid-auto-rows: 390px; /* Altura fija de cada cuadro */
+    gap:5px;/* Espacio entre cuadros */
+    justify-content: center; /* Centra los cuadros en el contenedor */
+    min-height: 85vh;
+  }
+
+.box{
+   transition: transform 0.1s ease;
+
+}
+
+.box:hover{
+    transform:scale(1.02);
+
+}
+.price{
+    color: var(--main-color);
+}
+.cartIcon,.trashIcon{
+  margin: 10px;
+  background-color: #00000090;
+  color: var(--text-color);
+  padding: 3px;
+  border-radius: 3px;
+  
+}
+.cartIcon:hover{
+    background-color: var(--main-color);
+
+}
+
+  

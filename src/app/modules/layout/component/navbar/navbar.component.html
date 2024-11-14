@@ -1,19 +1,127 @@
 <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Desarrollo Web Frontend</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            @for(item of navItems; track item) {
-                <app-nav-item [item]="item">
-                </app-nav-item>
-            }
-          </ul>
+    <nav class="navBar navbar navbar-expand-md p-3 fixed-top">
+        <div class="navBarContainer w-100 align-items-md-center d-flex justify-content-between justify-content-md-start">
+            <a class="navbar-brand styledTitle me-4" role="button"  routerLink="/">Inicio</a>
+            <div class="navbar-toggler " role="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <fa-icon class="faBars" [icon]="faBars"></fa-icon>
+            </div>
+
+            <div class="normalMenu align-items-center d-none d-md-flex w-100 justify-content-between">
+                <div class="navLeftItems d-flex ">
+
+                    <li class="nav-item dropdown mx-2">
+                        <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                        <ul class="dropdown-menu">
+          
+                          <li >
+                            <a class="dropdown-item" role="button" routerLink="/categoria/0">Mostrar todo</a>
+
+                            @for(category of categories;track category.category_id){
+                            <a class="dropdown-item" role="button"  routerLink="{{'/categoria/'+category.category_id}}">{{category.category}}</a>
+                            }
+                          </li>
+          
+                        </ul>
+                      </li>
+                      @if(auth.isAdmin){
+                      <li class="nav-item dropdown mx-2">
+                        <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item " role="button" routerLink="/categoria">Categoria</a></li>
+                          <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
+                          <li><a class="dropdown-item " role="button" routerLink="/facturas" >Facturas</a></li>
+                  
+                        </ul>
+                      </li>
+                      }
+                </div>
+
+                <div class="navRigthItems d-flex align-items-center ">
+                  @if(auth.isLoggedIn && !auth.isAdmin){
+                    <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
+                  }
+
+                    <div class="dropdownImg dropstart ms-md-auto">
+                      <img src="noimgW.png" class="userImg dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <ul class="dropdown-menu">
+                        <li *ngIf="!auth.isUserLoggedIn()"><a  class="dropdown-item" role="button"  routerLink="/login">Inicia sesion</a></li>
+                        <li *ngIf="!auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/register">Registrate</a></li>
+        
+                        <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/secured">Perfil</a></li>
+                        <li><a class="dropdown-item" role="button" (click)="updateMainColor()">Cambiar tema</a></li>
+
+                        <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+                  
+
+                        
+                      </ul>
+                    </div>
+
+                </div>
+            </div>
+
+           
         </div>
+        <div class="responsiveMenu collapse navbar-collapse w-100" id="navbarNav">
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="dropdownImg dropend ms-md-auto">
+              <img src="noimgW.png" class="userImg dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <ul class="dropdown-menu">
+                <li *ngIf="!auth.isUserLoggedIn()"><a  class="dropdown-item" role="button"  routerLink="/login">Inicia sesion</a></li>
+                <li *ngIf="!auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/register">Registrate</a></li>
+
+                <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button"  routerLink="/secured">Perfil</a></li>
+                <li><a class="dropdown-item" role="button" (click)="updateMainColor()">Cambiar tema</a></li>
+                <li *ngIf="auth.isUserLoggedIn()"><a class="dropdown-item" role="button" (click)="logOut()">Salir</a></li>
+
+                
+              </ul>
+            </div>
+            @if(auth.isLoggedIn && !auth.isAdmin){
+              <fa-icon class="m-0 mx-2 h3 text-white" [icon]="faCartShopping" role="button" routerLink="/cart"></fa-icon>
+            }
+          </div>
+          <hr>
+
+          <ul class="navbar-nav w-100">
+
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                  <ul class="dropdown-menu">
+                    
+    
+                    <li>
+                      <a class="dropdown-item" role="button" routerLink="/categoria/0">Mostrar todo</a>
+                      @for(category of categories;track category.category_id){
+                      <a class="dropdown-item" role="button"  routerLink="{{'/categoria/'+category.category_id}}">{{category.category}}</a>
+                      }
+                    </li>
+    
+                  </ul>
+                </li>
+
+                @if(auth.isAdmin){
+                  <li class="nav-item dropdown">
+                    <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item " role="button" routerLink="/categoria">categoria</a></li>
+                      <li><a class="dropdown-item " role="button" routerLink="/product">Productos</a></li>
+                      <li><a class="dropdown-item " role="button" >clientes</a></li>
+                      <li><a class="dropdown-item " role="button" >Facturas</a></li>
+                      <li><a class="dropdown-item " role="button">Region</a></li>
+                    </ul>
+                  </li>
+
+                }
+
+          </ul>
       </div>
+
+    
+      
+
     </nav>
+
+ 
   </header>

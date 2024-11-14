@@ -8,7 +8,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - Access to the MySQL server with a user that has permissions to create and manage databases.
 - A Java environment (JDK) installed to run the API.
 
-
 ### 1. Create the MySQL Database
 - Open MySQL client.
 - Create a new database using the following command:
@@ -16,13 +15,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
    ```sql
    CREATE DATABASE your_database_name;
    ```
-   -**Note**: Replace `your_mysql_user`.
+   - **Note**: Replace `your_mysql_user`.
 
 ### 2. Download and Extract the API Archive
 
-Download the compressed API file from the provided link or specified location.
-
-[Download api](https://mega.nz/file/oYszkaiD#EAbRhGDfe5OI1qX9Kjr88GNop66SBpoeQEQsvty8XF0)
+[Download API](https://mega.nz/file/oYszkaiD#EAbRhGDfe5OI1qX9Kjr88GNop66SBpoeQEQsvty8XF0)
    
 Extract the file to a directory of your choice.
 
@@ -52,3 +49,4 @@ Extract the file to a directory of your choice.
    ```
    
 - ***Note**: Replace your_database_name, your_mysql_user, and your_mysql_password with the correct values for your setup.
+

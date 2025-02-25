@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit {
         for(let i in this.products)this.getImg(this.products[i].product_id,i);
 
         //funciones para mostrar las secciones de la página de inicio
-        console.log(this.products.length)
         if(this.products.length>3){
           this.numbers=[];
           this.setNumbers(this.products.length);

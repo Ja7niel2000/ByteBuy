@@ -2,26 +2,51 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.2.
 
-## Development server
+## Instructions for Setting Up the Project
+### Prerequisites
+- MySQL installed and configured.
+- Access to the MySQL server with a user that has permissions to create and manage databases.
+- A Java environment (JDK) installed to run the API.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### 1. Create the MySQL Database
+- Open MySQL client.
+- Create a new database using the following command:
 
-## Code scaffolding
+   ```sql
+   CREATE DATABASE your_database_name;
+   ```
+   - **Note**: Replace `your_mysql_user`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 2. Download and Extract the API Archive
 
-## Build
+[Download API](https://mega.nz/file/oYszkaiD#EAbRhGDfe5OI1qX9Kjr88GNop66SBpoeQEQsvty8XF0)
+   
+Extract the file to a directory of your choice.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 3. Import the `data.sql` File
 
-## Running unit tests
+   Open again MySQL client
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   Import the `data.sql` file located in the extracted folder:
+   
+   - For example, using the MySQL command line:
+     ```sql
+     mysql -u your_mysql_user -p your_database_name < path/to/data.sql
+     ```
+   
+   - **Note**: Make sure to replace `your_mysql_user` and `your_database_name` with your actual MySQL username and database name.
+   
+### 4. Edit the `application.properties` File
 
-## Running end-to-end tests
+- Navigate to the `api/config/dwf-api/` folder.
+- Open the `application.properties` file with a text editor.
+- Update the following fields with your MySQL information:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+   spring.datasource.username=your_mysql_user
+   spring.datasource.password=your_mysql_password
+   ```
+   
+- ***Note**: Replace your_database_name, your_mysql_user, and your_mysql_password with the correct values for your setup.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

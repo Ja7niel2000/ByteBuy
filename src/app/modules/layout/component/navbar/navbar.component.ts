@@ -40,8 +40,12 @@ export class NavbarComponent implements OnInit {
         this.categories=v;
 
       },error:(e)=>{
-        this.swal.errorMessage('error '+e?.error?.message);
-
+        if(e.status==412){
+          localStorage.clear();
+          this.router.navigateByUrl('/login');
+        }
+        else
+          this.swal.errorMessage(e.error?.message);
       }
     })
   }
